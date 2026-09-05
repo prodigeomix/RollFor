@@ -33,11 +33,14 @@ function M.new(
 
   loot_facade.subscribe( "LootClosed", function()
     roll_controller.loot_closed()
+    if auto_group_loot and auto_group_loot.on_loot_closed then
+      auto_group_loot.on_loot_closed()
+    end
   end )
 
   loot_facade.subscribe( "LootSlotCleared", function( slot )
     master_loot.on_loot_slot_cleared( slot )
-    auto_group_loot.on_loot_slot_cleared()
+    auto_group_loot.on_loot_slot_cleared( slot )
   end )
 
   -- This covers the scenario where the master looter assigns the loot and then moves immediately,

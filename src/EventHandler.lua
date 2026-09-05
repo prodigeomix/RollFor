@@ -64,6 +64,24 @@ function M.handle_events( main )
     elseif event == "PLAYER_TARGET_CHANGED" then
       main.master_loot_warning.on_player_target_changed()
       main.auto_master_loot.on_player_target_changed( arg1 )
+      if main.auto_group_loot and main.auto_group_loot.on_player_target_changed then
+        main.auto_group_loot.on_player_target_changed()
+      end
+    elseif event == "PLAYER_REGEN_DISABLED" then
+      if main.auto_master_loot and main.auto_master_loot.on_combat_start then
+        main.auto_master_loot.on_combat_start()
+      end
+      if main.auto_group_loot and main.auto_group_loot.on_combat_start then
+        main.auto_group_loot.on_combat_start()
+      end
+    elseif event == "PLAYER_REGEN_ENABLED" then
+      if main.auto_group_loot and main.auto_group_loot.on_combat_end then
+        main.auto_group_loot.on_combat_end()
+      end
+    elseif event == "CHAT_MSG_COMBAT_HOSTILE_DEATH" then
+      if main.auto_group_loot and main.auto_group_loot.on_hostile_death then
+        main.auto_group_loot.on_hostile_death( arg1 )
+      end
     elseif event == "UI_ERROR_MESSAGE" then
       local message = m.vanilla and arg1 or arg2
 
@@ -105,6 +123,9 @@ function M.handle_events( main )
   frame:RegisterEvent( "TRADE_REQUEST_CANCEL" )
   frame:RegisterEvent( "UI_ERROR_MESSAGE" )
   frame:RegisterEvent( "PLAYER_TARGET_CHANGED" )
+  frame:RegisterEvent( "PLAYER_REGEN_DISABLED" )
+  frame:RegisterEvent( "PLAYER_REGEN_ENABLED" )
+  frame:RegisterEvent( "CHAT_MSG_COMBAT_HOSTILE_DEATH" )
   frame:RegisterEvent( "ZONE_CHANGED" )
   frame:RegisterEvent( "ZONE_CHANGED_NEW_AREA" )
 
