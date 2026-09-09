@@ -109,7 +109,7 @@ function M.transform( data )
 
     if item_id and roller_name then
       sr_result[ item_id ] = sr_result[ item_id ] or {
-        quality = entry.quality or 4,
+        quality = entry.quality,
         rollers = {}
       }
 
