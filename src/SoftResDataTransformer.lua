@@ -11,6 +11,12 @@ local make_roller = m.Types.make_roller
 ---@field metadata RaidResMetadata
 ---@field hardreserves RaidResHardRessedItem[]
 ---@field softreserves RaidResSoftResEntry[]
+---@field reservations RaidResNewFormatEntry[]  # New raidres.top format (post-Nov 2025)
+
+---@class RaidResNewFormatEntry
+---@field character { name: string, class: string }
+---@field raidItemId number
+---@field srPlus nil|number|{value: number, isValid: boolean}
 
 ---@class RaidResMetadata
 ---@field id string -- The id from the url.
@@ -82,13 +88,39 @@ function M.transform( data )
   local hr_result = {}
   local hard_reserves = data.hardreserves or {}
   local soft_reserves = data.softreserves or {}
+  -- New raidres.top format uses "reservations" with nested character/raidItemId
+  local new_reservations = data.reservations or {}
 
-  m.raid_id = data.metadata and data.metadata.id or nil
+  m.raid_id = (data.metadata and data.metadata.id) or nil
 
   local function find_roller( roller_name, rollers )
     for _, roller in ipairs( rollers ) do
       if roller.name == roller_name then
         return roller
+      end
+    end
+  end
+
+  -- Handle new raidres.top format: reservations with character.name and raidItemId
+  for _, entry in ipairs( new_reservations ) do
+    local character = entry.character or {}
+    local roller_name = character.name
+    local item_id = entry.raidItemId or entry.id
+
+    if item_id and roller_name then
+      sr_result[ item_id ] = sr_result[ item_id ] or {
+        quality = entry.quality or 4,
+        rollers = {}
+      }
+
+      local roller = find_roller( roller_name, sr_result[ item_id ].rollers )
+      if not roller then
+        roller = make_roller( roller_name, 1 )
+        roller.sr_plus = extract_sr_plus( entry )
+        roller.role = character.class or entry.role
+        table.insert( sr_result[ item_id ].rollers, roller )
+      else
+        roller.rolls = roller.rolls + 1
       end
     end
   end
