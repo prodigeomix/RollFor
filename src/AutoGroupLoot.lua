@@ -56,7 +56,7 @@ function M.new( loot_list, config, boss_list, player_info, roll_controller, roll
   end
 
   local function safe_set_group_loot( reason )
-    if not config.auto_group_loot() then return end
+    if not config.auto_group_loot or not config.auto_group_loot() then return end
     if not m.is_master_loot() or not player_info.is_leader() then return end
 
     -- Safety: NEVER call SetLootMethod while loot window is open!
@@ -106,12 +106,10 @@ function M.new( loot_list, config, boss_list, player_info, roll_controller, roll
 
   local function on_hostile_death( message )
     if not message then return end
-    for dead_unit in string.gmatch( message, "(.*) dies%." ) do
-      if is_a_boss( dead_unit ) then
-        m_boss_killed = true
-        m_boss_name = dead_unit
-      end
-      return
+    local _, _, dead_unit = string.find( message, "(.*) dies%." )
+    if dead_unit and is_a_boss( dead_unit ) then
+      m_boss_killed = true
+      m_boss_name = dead_unit
     end
   end
 

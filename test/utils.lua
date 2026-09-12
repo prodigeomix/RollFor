@@ -1,3 +1,5 @@
+table.unpack = table.unpack or unpack
+
 package.path = "./?.lua;" .. package.path .. ";./.?" .. "lua;./src/?.lua;./src/vanilla/?.lua;./src/bcc/?.lua;./libs/vanilla/LibStub/?.lua;./libs/bcc/LibStub/?.lua"
 
 local M = {}
@@ -502,6 +504,7 @@ end
 ---@param name string
 ---@param id number?
 function M.item_link( name, id )
+  if not name then return "" end
   return string.format( "|cff9d9d9d|Hitem:%s::::::::20:257::::::|h[%s]|h|r", id or "3299", name )
 end
 
@@ -674,6 +677,12 @@ function M.mock_loot_frame()
   M.mock_object( "LootFrame", {
     GetFrameLevel = function() return 10 end,
     UnregisterAllEvents = function() end,
+    SetScript = function() end,
+  } )
+  M.mock_object( "pfLootFrame", {
+    GetFrameLevel = function() return 10 end,
+    UnregisterAllEvents = function() end,
+    SetScript = function() end,
   } )
 end
 
@@ -1114,7 +1123,7 @@ function M.clear_dropped_items_db()
 end
 
 function M.read_file( file_name )
-  local file = io.open( file_name, "r" )
+  local file = io.open( file_name, "r" ) or io.open( "test/" .. file_name, "r" )
   if not file then return nil end
 
   local content = file:read( "*a" )

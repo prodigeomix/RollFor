@@ -876,13 +876,13 @@ function M.on_player_login()
 
   ---@diagnostic disable-next-line: undefined-global
   if LootFrame then
-    LootFrame:UnregisterAllEvents()
-    LootFrame:SetScript( "OnHide", nil )
+    if LootFrame.UnregisterAllEvents then LootFrame:UnregisterAllEvents() end
+    if LootFrame.SetScript then LootFrame:SetScript( "OnHide", nil ) end
   end
   ---@diagnostic disable-next-line: undefined-global
   if pfLootFrame then
-    pfLootFrame:UnregisterAllEvents()
-    pfLootFrame:SetScript( "OnHide", nil )
+    if pfLootFrame.UnregisterAllEvents then pfLootFrame:UnregisterAllEvents() end
+    if pfLootFrame.SetScript then pfLootFrame:SetScript( "OnHide", nil ) end
   end
 end
 
