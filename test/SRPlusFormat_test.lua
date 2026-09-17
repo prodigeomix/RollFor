@@ -1,7 +1,8 @@
-package.path = "./?.lua;" .. package.path .. ";../?.lua;../RollFor/?.lua;../RollFor/libs/?.lua;../RollFor/libs/vanilla/LibStub/?.lua"
+package.path = "./?.lua;./test/?.lua;" .. package.path .. ";../?.lua;../RollFor/?.lua;../RollFor/libs/?.lua;../RollFor/libs/vanilla/LibStub/?.lua"
 
 local u = require( "test/utils" )
-local lu, eq = u.luaunit( "assertEquals" )
+local lu = require( "luaunit" )
+local eq = lu.assertEquals
 
 -- Load Bcc compat (sets M.mod, M.getn — Lua 5.1 shims) BEFORE modules
 require( "src/bcc/compat" )
@@ -79,6 +80,64 @@ function SRPlusFormatSpec:should_handle_new_format_reservation_without_sr_plus()
   }
   local sr_result, hr_result = mod.transform( data )
   eq( nil, sr_result[ 8129 ].rollers[ 1 ].sr_plus )
+end
+
+function SRPlusFormatSpec:should_preserve_sr_plus_when_second_reservation_has_sr_plus()
+  local data = {
+    metadata = { id = "legacy", origin = "raidres" },
+    softreserves = {
+      {
+        name = "PlayerA",
+        role = "Hunter",
+        items = {
+          { id = 100, quality = 4 },
+          { id = 100, quality = 4, sr_plus = 20 }
+        }
+      }
+    }
+  }
+  local sr_result, hr_result = mod.transform( data )
+  eq( 20, sr_result[ 100 ].rollers[ 1 ].sr_plus )
+  eq( 2, sr_result[ 100 ].rollers[ 1 ].rolls )
+end
+
+function SRPlusFormatSpec:should_preserve_sr_plus_in_new_format_when_second_reservation_has_sr_plus()
+  local data = {
+    metadata = { id = "test", origin = "raidres" },
+    reservations = {
+      {
+        character = { name = "PlayerB", class = "Warrior" },
+        raidItemId = 200
+      },
+      {
+        character = { name = "PlayerB", class = "Warrior" },
+        raidItemId = 200,
+        srPlus = { value = 30, isValid = true }
+      }
+    }
+  }
+  local sr_result, hr_result = mod.transform( data )
+  eq( 30, sr_result[ 200 ].rollers[ 1 ].sr_plus )
+  eq( 2, sr_result[ 200 ].rollers[ 1 ].rolls )
+end
+
+function SRPlusFormatSpec:should_pick_max_sr_plus_when_both_reservations_have_values()
+  local data = {
+    metadata = { id = "legacy", origin = "raidres" },
+    softreserves = {
+      {
+        name = "PlayerC",
+        role = "Mage",
+        items = {
+          { id = 300, quality = 4, sr_plus = 10 },
+          { id = 300, quality = 4, sr_plus = 50 }
+        }
+      }
+    }
+  }
+  local sr_result, hr_result = mod.transform( data )
+  eq( 50, sr_result[ 300 ].rollers[ 1 ].sr_plus )
+  eq( 2, sr_result[ 300 ].rollers[ 1 ].rolls )
 end
 
 os.exit( lu.LuaUnit.run( "-o", "text", "-v", "-T", "Spec", "-m", "should" ) )

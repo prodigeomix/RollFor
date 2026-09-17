@@ -13,6 +13,7 @@ local getn = m.getn
 ---@field get_winners fun()
 ---@field update_item fun( index: number, data: table )
 ---@field has_item_been_awarded fun( player_name: string, item_id: number ): boolean
+---@field how_many_awarded fun( player_name: string, item_id: number ): number
 ---@field has_item_been_awarded_to_any_player fun( item_id: ItemId ): boolean
 ---@field clear fun( force: boolean?)
 ---@field subscribe fun( event_type: string, callback: fun( data: any ) )
@@ -92,13 +93,29 @@ function M.new( db, group_roster, config )
 
   ---@param player_name string
   ---@param item_id number
+  ---@param player_name string
+  ---@param item_id number
   ---@return boolean
   local function has_item_been_awarded( player_name, item_id )
     for _, item in pairs( db.awarded_items ) do
-      if item.player_name == player_name and item.item_id == item_id then return true end
+      if string.lower( item.player_name ) == string.lower( player_name ) and item.item_id == item_id then return true end
     end
 
     return false
+  end
+
+  ---@param player_name string
+  ---@param item_id number
+  ---@return number
+  local function how_many_awarded( player_name, item_id )
+    local count = 0
+    for _, item in pairs( db.awarded_items ) do
+      if string.lower( item.player_name ) == string.lower( player_name ) and item.item_id == item_id then
+        count = count + 1
+      end
+    end
+
+    return count
   end
 
   ---@param item_id ItemId
@@ -126,7 +143,7 @@ function M.new( db, group_roster, config )
     for i = getn( db.awarded_items ), 1, -1 do
       local awarded_item = db.awarded_items[ i ]
 
-      if awarded_item.player_name == player_name and awarded_item.item_id == item_id then
+      if string.lower( awarded_item.player_name ) == string.lower( player_name ) and awarded_item.item_id == item_id then
         table.remove( db.awarded_items, i )
         notify_subscribers( 'award_data_updated' )
         return
@@ -141,6 +158,7 @@ function M.new( db, group_roster, config )
     get_winners = get_winners,
     update_item = update_item,
     has_item_been_awarded = has_item_been_awarded,
+    how_many_awarded = how_many_awarded,
     has_item_been_awarded_to_any_player = has_item_been_awarded_to_any_player,
     clear = clear,
     subscribe = subscribe

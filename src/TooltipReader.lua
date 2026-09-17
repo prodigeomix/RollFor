@@ -45,17 +45,22 @@ function M.new( api )
       return BindType.None
     end
 
-    local line = _G[ "RollForTooltipFrameTextLeft2" ]:GetText()
+    local max_line = num_lines > 5 and 5 or num_lines
 
-    if line == api.ITEM_BIND_ON_PICKUP or line == api.ITEM_SOULBOUND then
-      return BindType.BindOnPickup
-    elseif line == api.ITEM_BIND_ON_EQUIP then
-      return BindType.BindOnEquip
-    elseif line == api.ITEM_BIND_QUEST then
-      return BindType.Quest
-    else
-      return BindType.None
+    for i = 2, max_line do
+      local line_obj = _G[ "RollForTooltipFrameTextLeft" .. i ]
+      local line = line_obj and line_obj:GetText()
+
+      if line == api.ITEM_BIND_ON_PICKUP or line == api.ITEM_SOULBOUND then
+        return BindType.BindOnPickup
+      elseif line == api.ITEM_BIND_ON_EQUIP then
+        return BindType.BindOnEquip
+      elseif line == api.ITEM_BIND_QUEST then
+        return BindType.Quest
+      end
     end
+
+    return BindType.None
   end
 
   ---@return table<number, PlayerClass>|nil
@@ -65,10 +70,10 @@ function M.new( api )
     for i = 1, num_lines do
       local line = _G[ "RollForTooltipFrameTextLeft" .. i ]:GetText()
 
-      for classes in string.gmatch( line, "Classes: (.+)" ) do
+      for classes in string.gfind( line, "Classes: (.+)" ) do
         local result = {}
 
-        for class in string.gmatch( classes, "([^, ]+)" ) do
+        for class in string.gfind( classes, "([^, ]+)" ) do
           table.insert( result, class )
         end
 

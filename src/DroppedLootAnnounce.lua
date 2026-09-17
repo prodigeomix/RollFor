@@ -201,6 +201,10 @@ function M.process_dropped_items( loot_list, softres, auto_loot, config )
 
     local quality = item.quality or 0
 
+    if softres and (softres.is_item_hardressed( item.id ) or getn( softres.get( item.id ) ) > 0) then
+      return true
+    end
+
     if item.bind == BindType.BindOnPickup and quality >= ItemQuality.Uncommon then
       return true
     end

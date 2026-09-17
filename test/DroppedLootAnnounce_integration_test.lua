@@ -556,8 +556,43 @@ function DroppedLootAnnounceIntegrationSpec:should_announce_all_sr_items_even_if
   )
 end
 
+function DroppedLootAnnounceIntegrationSpec:should_show_soft_ressed_rare_non_bop_item_even_if_loot_threshold_is_epic()
+  -- Given: Onyxia Hide Backpack (17966) is Rare (quality 3) and not BoP
+  master_looter( "Psikutas" )
+  is_in_raid( leader( "Psikutas" ), "Obszczymucha" )
+  loot_threshold( LootQuality.Epic )
+  soft_res( sr( "Obszczymucha", 17966 ) )
+
+  -- When
+  loot( item( "Onyxia Hide Backpack", 17966, LootQuality.Rare, BindType.None ) )
+
+  -- Then
+  m.chat.assert(
+    r( "1 item dropped:" ),
+    r( "1. [Onyxia Hide Backpack] (SR by Obszczymucha)" )
+  )
+end
+
+function DroppedLootAnnounceIntegrationSpec:should_show_hard_ressed_rare_non_bop_item_even_if_loot_threshold_is_epic()
+  -- Given: Onyxia Hide Backpack (17966) is Rare (quality 3) and not BoP, but Hard-Reserved
+  master_looter( "Psikutas" )
+  is_in_raid( leader( "Psikutas" ), "Obszczymucha" )
+  loot_threshold( LootQuality.Epic )
+  soft_res( hr( 17966 ) )
+
+  -- When
+  loot( item( "Onyxia Hide Backpack", 17966, LootQuality.Rare, BindType.None ) )
+
+  -- Then
+  m.chat.assert(
+    r( "1 item dropped:" ),
+    r( "1. [Onyxia Hide Backpack] (HR)" )
+  )
+end
+
 utils.mock_libraries()
 utils.load_real_stuff_and_inject( module_registry, m )
 utils.mock_blizzard_loot_buttons()
 
 os.exit( lu.LuaUnit.run() )
+

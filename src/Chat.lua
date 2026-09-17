@@ -29,7 +29,44 @@ function M.new( api, group_roster, player_info )
   end
 
   local function announce( text, use_raid_warning )
-    api.SendChatMessage( text, get_roll_announcement_chat_type( use_raid_warning ) )
+    if not text then return end
+    local chat_type = get_roll_announcement_chat_type( use_raid_warning )
+
+    if string.len( text ) <= 255 then
+      api.SendChatMessage( text, chat_type )
+      return
+    end
+
+    local remaining = text
+    while string.len( remaining ) > 255 do
+      local split_idx = 250
+      local chunk = string.sub( remaining, 1, split_idx )
+      local last_comma = nil
+      local last_space = nil
+
+      for i = split_idx, 1, -1 do
+        local ch = string.sub( chunk, i, i )
+        if not last_comma and ch == "," then
+          last_comma = i
+          break
+        elseif not last_space and ch == " " then
+          last_space = i
+        end
+      end
+
+      local cut_point = last_comma or last_space or split_idx
+      local part = string.sub( remaining, 1, cut_point )
+      api.SendChatMessage( part, chat_type )
+      remaining = string.sub( remaining, cut_point + 1 )
+
+      while string.sub( remaining, 1, 1 ) == " " do
+        remaining = string.sub( remaining, 2 )
+      end
+    end
+
+    if string.len( remaining ) > 0 then
+      api.SendChatMessage( remaining, chat_type )
+    end
   end
 
   local function info( message, color_fn, module_name )

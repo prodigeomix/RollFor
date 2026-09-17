@@ -114,13 +114,20 @@ function M.transform( data )
       }
 
       local roller = find_roller( roller_name, sr_result[ item_id ].rollers )
+      local sr_plus_val = extract_sr_plus( entry )
+
       if not roller then
         roller = make_roller( roller_name, 1 )
-        roller.sr_plus = extract_sr_plus( entry )
+        roller.sr_plus = sr_plus_val
         roller.role = character.class or entry.role
         table.insert( sr_result[ item_id ].rollers, roller )
       else
         roller.rolls = roller.rolls + 1
+        if sr_plus_val then
+          if not roller.sr_plus or sr_plus_val > roller.sr_plus then
+            roller.sr_plus = sr_plus_val
+          end
+        end
       end
     end
   end
@@ -140,14 +147,20 @@ function M.transform( data )
         }
 
         local roller = find_roller( roller_name, sr_result[ item_id ].rollers )
+        local sr_plus_val = extract_sr_plus( item ) or extract_sr_plus( sr )
 
         if not roller then
           roller = make_roller( roller_name, 1 )
-          roller.sr_plus = extract_sr_plus( item )
+          roller.sr_plus = sr_plus_val
           roller.role = roller_role
           table.insert( sr_result[ item_id ].rollers, roller )
         else
           roller.rolls = roller.rolls + 1
+          if sr_plus_val then
+            if not roller.sr_plus or sr_plus_val > roller.sr_plus then
+              roller.sr_plus = sr_plus_val
+            end
+          end
         end
       end
     end
