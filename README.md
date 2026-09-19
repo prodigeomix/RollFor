@@ -2,9 +2,7 @@
 A World of Warcraft (1.12.1 and 2.5.2) addon that manages rolling for items.  
 
 ## New in this fork
-This version includes the following features and improvements:
-* **Turtle WoW Tier Set Spec-Variant Equivalence**: Pre-compiled mappings for all 241 slot groups (MC, Onyxia, BWL, AQ40, Naxxramas T3 & T3.5). When a boss drops a spec variant (e.g. Protection *Judgement Wristguards*), RollFor automatically recognizes reservations made for the base Vanilla ID (*Judgement Bracers*) and seamlessly merges rolls and SR+ bonuses across all variants.
-* **Modern raidres.top Integration**: Full support for the new `raidres.top` export format (`reservations`, `character.name`, `raidItemId`, and structured `srPlus` validation objects) alongside legacy `softres.it` and `raidres.fly.dev`.
+* **Modern raidres.top Integration**: Full support for the new `raidres.top` export format (`reservations`, `character.name`, `raidItemId`, and structured `srPlus` validation objects) alongside legacy `softres.it` and `raidres.fly.dev`. Properly handles sheets where `requireSrPlusValidation` is disabled.
 * **Sub-Threshold Reserved Loot Announcements**: Soft-reserved and hard-reserved items now bypass the master loot quality threshold filter (e.g., Onyxia Hide Backpack in an Epic-threshold raid is properly announced and queued).
 * **Multi-Reservation SR+ Preservation**: Preserves and applies the highest `sr_plus` value across duplicate or merged player reservations.
 * **Safe Long Chat Message Splitting**: Long announcements exceeding the 255-character client chat limit are cleanly split across messages without silent truncation.

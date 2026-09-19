@@ -89,10 +89,6 @@ local function create_components()
 
   local db = m.Db.new( M.char_db )
 
-  if m.ItemEquivalence and m.ItemEquivalence.init_from_atlasloot then
-    m.ItemEquivalence.init_from_atlasloot()
-  end
-
   ---@type EventBus
   M.config_event_bus = m.EventBus.new()
 

@@ -589,45 +589,6 @@ function SoftResIntegrationSpec:should_stop_rolling_if_player_who_won_still_has_
   )
 end
 
-function SoftResIntegrationSpec:should_match_sr_on_equivalent_tier_piece_variant_when_base_id_was_soft_ressed()
-  -- Given
-  -- Pysanka soft-reserves base Paladin T2 bracers (16951)
-  player( "Psikutas" )
-  is_in_raid( leader( "Psikutas" ), "Pysanka", "Banthracis" )
-  soft_res( sr( "Pysanka", 16951 ), sr( "Banthracis", 16951 ) )
-
-  -- When boss drops 47019 (Judgement Wristguards - Protection variant)
-  roll_for( "Judgement Wristguards", 1, 47019 )
-  roll( "Pysanka", 42 )
-  roll( "Banthracis", 99 )
-
-  -- Then
-  m.chat.assert(
-    rw( "Roll for [Judgement Wristguards]: SR by Banthracis and Pysanka" ),
-    cr( "Banthracis rolled the highest (99) for [Judgement Wristguards] (SR)." ),
-    rolling_finished()
-  )
-end
-
-function SoftResIntegrationSpec:should_match_sr_on_handguards_of_transcendence_spec_variant()
-  -- Given
-  -- Holysting soft-reserves base Priest T2 gloves (16920)
-  player( "Psikutas" )
-  is_in_raid( leader( "Psikutas" ), "Holysting", "Obszczymucha" )
-  soft_res( sr( "Holysting", 16920 ) )
-
-  -- When boss drops 47210 (Handguards of Transcendence - Disc/Shadow variant)
-  roll_for( "Handguards of Transcendence", 1, 47210 )
-  roll( "Holysting", 75 )
-  finish_rolling()
-
-  -- Then
-  m.chat.assert(
-    rw( "Holysting soft-ressed [Handguards of Transcendence]." ),
-    rolling_not_in_progress()
-  )
-end
-
 u.mock_libraries()
 u.load_real_stuff_and_inject( module_registry, m )
 

@@ -29,7 +29,6 @@ src\DroppedLoot.lua
 src\DroppedLootAnnounce.lua
 src\TradeTracker.lua
 src\SoftResDataTransformer.lua
-src\ItemEquivalence.lua
 src\SoftRes.lua
 src\SoftResAwardedLootDecorator.lua
 src\SoftResAbsentPlayersDecorator.lua

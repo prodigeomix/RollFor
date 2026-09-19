@@ -50,30 +50,27 @@ local make_roller = m.Types.make_roller
 ---@alias HardResData table<ItemId, HardRessedItem>
 
 local function extract_sr_plus( item )
+  if not item then return nil end
+
   -- Old raidres.fly.dev format: flat string or number
   if type( item.sr_plus ) == "string" or type( item.sr_plus ) == "number" then
     return tonumber( item.sr_plus )
   end
 
-  -- New raidres.top format: camelCase field, possibly nested {value, isValid}
+  -- New raidres.top format: camelCase field, flat string or number
   if type( item.srPlus ) == "string" or type( item.srPlus ) == "number" then
     return tonumber( item.srPlus )
   end
+
+  -- New raidres.top format: nested {value = N, isValid = BOOL}
+  -- Note: raidres defaults isValid to false when requireSrPlusValidation is false.
+  -- Always extract the numeric value if present so valid bonuses are not lost.
   if type( item.srPlus ) == "table" and item.srPlus.value then
-    -- raidres.top only exports valid entries once at least one reservation
-    -- is validated, but leaves the pre-validation fallback case undocumented.
-    -- Don't award an SR+ bonus that's explicitly flagged invalid.
-    if item.srPlus.isValid == false then
-      return nil
-    end
     return tonumber( item.srPlus.value )
   end
 
-  -- Fallback: old field as fallback-table (unlikely but defensive)
+  -- Fallback: old field as fallback-table
   if type( item.sr_plus ) == "table" and item.sr_plus.value then
-    if item.sr_plus.isValid == false then
-      return nil
-    end
     return tonumber( item.sr_plus.value )
   end
 

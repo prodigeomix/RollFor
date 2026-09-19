@@ -263,15 +263,20 @@ Implemented message boundary splitting in `src/Chat.lua` to break long messages 
 
 ---
 
-## Issue 7: Turtle WoW Tier Set Spec-Variant Soft-Reserve Equivalence (v4.8.5)
+## Issue 7: Turtle WoW Raid Boss Drop Verification & Equivalence Reversion (v4.8.5)
+
+### Findings
+Following review and feedback from raid leader Pysanka (verified against real Blackwing Lair sheet `3T9RB7`), Turtle WoW raid bosses drop standard Vanilla item IDs directly (e.g. Razorgore drops Judgement Bindings `#16951`). Spec-variant sets are vendor exchange rewards outside the raid. The experimental `ItemEquivalence.lua` mapping layer was removed to prevent cross-contamination of soft-reserve groupings. Clean 1:1 ID matching was restored in `SoftRes.lua` and `AwardedLoot.lua`.
+
+---
+
+## Issue 8: SR+ Zeroed Out When Validation Disabled on raidres.top (v4.8.5)
 
 ### Problem
-On Turtle WoW, Tier 1, Tier 2, Tier 2.5 (AQ40), Tier 3, and Tier 3.5 sets feature spec-specific variants dropping directly from raid bosses with unique item IDs (e.g. Protection *Judgement Wristguards* #47019 vs Holy *Judgement Bracers* #16951). Players reserve items on `raidres.top` using base Vanilla IDs. When the boss dropped an alternate spec variant, RollFor queried `softres.get(dropped_id)` and found 0 soft-reserves.
+On `raidres.top`, when `requireSrPlusValidation` is `false` (default on most sheets, including `3T9RB7`), the API exports reservations with `srPlus: { value: N, isValid: false }`. The previous defensive guard `if item.srPlus.isValid == false then return nil end` mistakenly treated unvalidated entries as invalid, zeroing out SR+ bonuses for all players in the raid.
 
 ### Fix
-1. **Created `src/ItemEquivalence.lua`**: Pre-compiled mappings for all 241 slot groups covering MC (T1), Onyxia & BWL (T2), AQ40 (T2.5), and Naxxramas (T3 & T3.5), plus dynamic `init_from_atlasloot()` runtime scanning.
-2. **Updated `src/SoftRes.lua`**: Queries (`get`, `is_player_softressing`, etc.) inspect all equivalent item IDs and merge rollers seamlessly, summing roll counts and preserving highest `sr_plus`.
-3. **Updated `src/AwardedLoot.lua`**: Award tracking matches across equivalent IDs, preventing double-dipping and unblocking open rolls once the reservation is fulfilled.
+Updated `extract_sr_plus()` in `src/SoftResDataTransformer.lua` to always extract the numeric `value` without checking `isValid`, ensuring legitimate SR+ points are preserved regardless of sheet validation settings.
 
 ---
 
@@ -280,10 +285,10 @@ On Turtle WoW, Tier 1, Tier 2, Tier 2.5 (AQ40), Tier 3, and Tier 3.5 sets featur
 All source files were scanned with the `validate_lua50.py` compatibility validator (ported from DiscPriest's standard audit toolkit) which detects post-Lua 5.0 syntax and API usage violations.
 
 **Files modified by recent audits — all clean:**
-- `src/ItemEquivalence.lua` — 0 violations
 - `src/SoftRes.lua` — 0 violations
 - `src/AwardedLoot.lua` — 0 violations
 - `src/SoftResDataTransformer.lua` — 0 violations
+- `src/DroppedLootAnnounce.lua` — 0 violations
 - `src/vanilla/compat.lua` — 0 violations
 
 **Pre-existing violations (not in scope of this fix):**

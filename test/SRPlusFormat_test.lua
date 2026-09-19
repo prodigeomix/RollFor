@@ -30,7 +30,9 @@ function SRPlusFormatSpec:should_extract_sr_plus_from_raidres_top_object()
   eq( "Carbon", sr_result[ 6724 ].rollers[ 1 ].name )
 end
 
-function SRPlusFormatSpec:should_not_extract_invalid_sr_plus()
+function SRPlusFormatSpec:should_extract_sr_plus_when_isValid_is_false()
+  -- On raidres.top, when requireSrPlusValidation is false, all entries have isValid = false.
+  -- The numeric value must still be extracted.
   local data = {
     metadata = { id = "test", origin = "raidres" },
     reservations = {
@@ -42,7 +44,7 @@ function SRPlusFormatSpec:should_not_extract_invalid_sr_plus()
     }
   }
   local sr_result, hr_result = mod.transform( data )
-  eq( nil, sr_result[ 6724 ].rollers[ 1 ].sr_plus )
+  eq( 50, sr_result[ 6724 ].rollers[ 1 ].sr_plus )
 end
 
 function SRPlusFormatSpec:should_handle_legacy_string_sr_plus()

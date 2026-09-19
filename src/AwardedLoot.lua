@@ -91,20 +91,14 @@ function M.new( db, group_roster, config )
     end
   end
 
-  local function is_item_id_match( item_id_a, item_id_b )
-    if item_id_a == item_id_b then return true end
-    if m.ItemEquivalence and m.ItemEquivalence.are_items_equivalent then
-      return m.ItemEquivalence.are_items_equivalent( item_id_a, item_id_b )
-    end
-    return false
-  end
-
+  ---@param player_name string
+  ---@param item_id number
   ---@param player_name string
   ---@param item_id number
   ---@return boolean
   local function has_item_been_awarded( player_name, item_id )
     for _, item in pairs( db.awarded_items ) do
-      if string.lower( item.player_name ) == string.lower( player_name ) and is_item_id_match( item.item_id, item_id ) then return true end
+      if string.lower( item.player_name ) == string.lower( player_name ) and item.item_id == item_id then return true end
     end
 
     return false
@@ -116,7 +110,7 @@ function M.new( db, group_roster, config )
   local function how_many_awarded( player_name, item_id )
     local count = 0
     for _, item in pairs( db.awarded_items ) do
-      if string.lower( item.player_name ) == string.lower( player_name ) and is_item_id_match( item.item_id, item_id ) then
+      if string.lower( item.player_name ) == string.lower( player_name ) and item.item_id == item_id then
         count = count + 1
       end
     end
@@ -128,7 +122,7 @@ function M.new( db, group_roster, config )
   ---@return boolean
   local function has_item_been_awarded_to_any_player( item_id )
     for _, item in pairs( db.awarded_items ) do
-      if is_item_id_match( item.item_id, item_id ) then return true end
+      if item.item_id == item_id then return true end
     end
 
     return false
