@@ -2,7 +2,14 @@
 A World of Warcraft (1.12.1 and 2.5.2) addon that manages rolling for items.  
 
 ## New in this fork
-This version includes the following new features:
+This version includes the following features and improvements:
+* **Turtle WoW Tier Set Spec-Variant Equivalence**: Pre-compiled mappings for all 241 slot groups (MC, Onyxia, BWL, AQ40, Naxxramas T3 & T3.5). When a boss drops a spec variant (e.g. Protection *Judgement Wristguards*), RollFor automatically recognizes reservations made for the base Vanilla ID (*Judgement Bracers*) and seamlessly merges rolls and SR+ bonuses across all variants.
+* **Modern raidres.top Integration**: Full support for the new `raidres.top` export format (`reservations`, `character.name`, `raidItemId`, and structured `srPlus` validation objects) alongside legacy `softres.it` and `raidres.fly.dev`.
+* **Sub-Threshold Reserved Loot Announcements**: Soft-reserved and hard-reserved items now bypass the master loot quality threshold filter (e.g., Onyxia Hide Backpack in an Epic-threshold raid is properly announced and queued).
+* **Multi-Reservation SR+ Preservation**: Preserves and applies the highest `sr_plus` value across duplicate or merged player reservations.
+* **Safe Long Chat Message Splitting**: Long announcements exceeding the 255-character client chat limit are cleanly split across messages without silent truncation.
+* **Custom Turtle WoW Raids Support**: Integrated boss encounters for Emerald Sanctum (*Solnius*, *Erennius*) and Lower Karazhan (*Moroes*, *Lord Blackwald II*, *Brood Queen Araxxna*, etc.).
+* **Strict Turtle WoW Lua 5.0 Engine Compliance**: 100% compatible with the Turtle WoW 1.18.1 client runtime.
 * New option `/rf config auto-class-announce` Toggle replace normal roll message with classes for items that has class restrictions.
 * New option `/rf config auto-tmog` Toggle automatically disable tmog roll option on trash loot.
 * New option `/rf config loot-frame-cursor` Toggle loot frame being positioned at cursor location.
@@ -96,8 +103,10 @@ Disable this feature with:
 ---
 
 ### Soft res integration
- * Integrates with https://raidres.fly.dev (1.12.1).
+ * Integrates with https://raidres.top (Turtle WoW / 1.12.1) and https://raidres.fly.dev.
  * Integrates with https://softres.it (2.5.2) via Gargul Export.
+ * Supports **SR+ bonuses** with automatic validation handling.
+ * Automatically maps **Turtle WoW tier set spec variants** across all raid tiers (T1, T2, AQ40, T3, T3.5).
  * Minimap icon shows soft res status and who did not soft res.
  * Fully automated (shows who soft ressed, only accepts rolls from players who SR).
 
@@ -160,9 +169,9 @@ instead of `/rf`. "arf" stands for "All Roll For".
 
 ## Soft-Res setup
 
-1. Create a Soft Res list at https://raidres.fly.dev (1.12.1) or https://softres.it (2.5.2).  
+1. Create a Soft Res list at https://raidres.top (or legacy raidres.fly.dev / softres.it).  
 2. Ask raiders to add their items.
-3. When ready, lock the raid and click on **RollFor export** (raidres.fly.dev) or **Gargul Export** (softes.it) button.
+3. When ready, lock the raid and click on **RollFor export** (or **Gargul Export**) button.
 
 <img src="https://github.com/sica42/roll-for-vanilla/blob/master/docs/raidres-export.jpg" alt="Raidres export" style="width:720px;height:350">
 
@@ -202,7 +211,7 @@ The SR data from *Raidres* is a **Base64** encoded **JSON**. Decode it to see wh
 ### Fixing mistyped player names in SR setup
 
 When using soft-res, the players sometimes mistype their nickname, e.g. 
-`Johnny` in game will be `Jonnhy` in the raidres.fly.dev website.  
+`Johnny` in game will be `Jonnhy` in the raidres.top website.  
 The addon is smart enough to fix simple typos like that for you.  
 It will also deal with special characters in player names.  
 However, sometimes there's so many typos and the addon can't match the  

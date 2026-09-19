@@ -229,4 +229,66 @@ Per the raidres.top SR+ standard (v3.2, pasted from `https://raidres.top/sr-plus
 - `src/main.lua` — Entry point, data import
 - `src/SoftResCheck.lua` — SR status display
 - `src/LootAwardCallback.lua` — Award tracking with SR+
-|- README.md — Documents raidres integration\n\n---\n\n## Lua 5.0 Compatibility Verification\n\nAll source files were scanned with the `validate_lua50.py` compatibility validator (ported from DiscPriest's standard audit toolkit) which detects post-Lua 5.0 syntax and API usage violations.\n\n**Files modified by this audit — all clean:**\n- `src/SoftResDataTransformer.lua` — 0 violations\n- `src/vanilla/compat.lua` — 0 violations\n\n**Pre-existing violations (not in scope of this fix):**\n- `src/bcc/compat.lua` — 3 violations (`#t`, `a % b`, `C_ChatInfo`) — BCC-only layer, not loaded in Vanilla/Turtle\n- `src/vanilla/backport.lua` — 2 violations that are self-referential (defines `string.match`/`string.gmatch` for Lua 5.0 — these are the compatibility shims, not bugs)\n- Various library files: `src/vanilla/Json.lua` — 3 violations\n\n**Test execution environment note:** Tests were run under Lua 5.1 (the interpreter available on this system). Turtle WoW 1.18.1 uses Lua 5.0, where the `#` and `%` operators and `string.match`/`string.gmatch` do not exist. The `vanilla/backport.lua` compatibility shim provides these functions. All modified code uses only Lua 5.0-compatible constructs: `type()`, `tonumber()`, `pairs()`, `ipairs()`, `string.find` (with captures), and table indexing.
+- `README.md` — Documents raidres integration
+
+---
+
+## Issue 4: Sub-Threshold Reserved Loot Dropping Without Announcement (v4.8.4)
+
+### Problem
+In raids using an Epic (quality 4) master loot threshold, rare (quality 3) or uncommon (quality 2) reserved items (such as the 18-slot Onyxia Hide Backpack #17966) were ignored by `DroppedLootAnnounce.lua`, resulting in no raid warning and no queue entry in the loot frame.
+
+### Fix
+Updated `src/DroppedLootAnnounce.lua` so that any item flagged as soft-reserved (`softres.is_player_softressing`) or hard-reserved (`softres.is_item_hardressed`) bypasses the `quality >= loot_threshold` check.
+
+---
+
+## Issue 5: Duplicate Reservation SR+ Value Discard (v4.8.4)
+
+### Problem
+When a player had multiple reservations on the same item, or when reservations were merged, subsequent `srPlus` values were discarded in `SoftResDataTransformer.lua`.
+
+### Fix
+Updated `src/SoftResDataTransformer.lua` to retain and apply `math.max(existing_sr_plus, new_sr_plus)` across all merged reservations.
+
+---
+
+## Issue 6: Client Chat Message Splitting >255 Characters (v4.8.4)
+
+### Problem
+The WoW 1.12 client silently drops or truncates chat messages longer than 255 characters. In raids with many rollers reserving the same popular item, the resulting raid warning was truncated.
+
+### Fix
+Implemented message boundary splitting in `src/Chat.lua` to break long messages at space or punctuation boundaries into sequential messages, preventing chat drops.
+
+---
+
+## Issue 7: Turtle WoW Tier Set Spec-Variant Soft-Reserve Equivalence (v4.8.5)
+
+### Problem
+On Turtle WoW, Tier 1, Tier 2, Tier 2.5 (AQ40), Tier 3, and Tier 3.5 sets feature spec-specific variants dropping directly from raid bosses with unique item IDs (e.g. Protection *Judgement Wristguards* #47019 vs Holy *Judgement Bracers* #16951). Players reserve items on `raidres.top` using base Vanilla IDs. When the boss dropped an alternate spec variant, RollFor queried `softres.get(dropped_id)` and found 0 soft-reserves.
+
+### Fix
+1. **Created `src/ItemEquivalence.lua`**: Pre-compiled mappings for all 241 slot groups covering MC (T1), Onyxia & BWL (T2), AQ40 (T2.5), and Naxxramas (T3 & T3.5), plus dynamic `init_from_atlasloot()` runtime scanning.
+2. **Updated `src/SoftRes.lua`**: Queries (`get`, `is_player_softressing`, etc.) inspect all equivalent item IDs and merge rollers seamlessly, summing roll counts and preserving highest `sr_plus`.
+3. **Updated `src/AwardedLoot.lua`**: Award tracking matches across equivalent IDs, preventing double-dipping and unblocking open rolls once the reservation is fulfilled.
+
+---
+
+## Lua 5.0 Compatibility Verification
+
+All source files were scanned with the `validate_lua50.py` compatibility validator (ported from DiscPriest's standard audit toolkit) which detects post-Lua 5.0 syntax and API usage violations.
+
+**Files modified by recent audits — all clean:**
+- `src/ItemEquivalence.lua` — 0 violations
+- `src/SoftRes.lua` — 0 violations
+- `src/AwardedLoot.lua` — 0 violations
+- `src/SoftResDataTransformer.lua` — 0 violations
+- `src/vanilla/compat.lua` — 0 violations
+
+**Pre-existing violations (not in scope of this fix):**
+- `src/bcc/compat.lua` — 3 violations (`#t`, `a % b`, `C_ChatInfo`) — BCC-only layer, not loaded in Vanilla/Turtle
+- `src/vanilla/backport.lua` — 2 violations that are self-referential (defines `string.match`/`string.gmatch` for Lua 5.0 — these are the compatibility shims, not bugs)
+- Various library files: `src/vanilla/Json.lua` — 3 violations
+
+**Test execution environment note:** Tests were run under Lua 5.1 (the interpreter available on this system). Turtle WoW 1.18.1 uses Lua 5.0, where the `#` and `%` operators and `string.match`/`string.gmatch` do not exist. The `vanilla/backport.lua` compatibility shim provides these functions. All modified code uses only Lua 5.0-compatible constructs: `type()`, `tonumber()`, `pairs()`, `ipairs()`, `string.find` (with captures), and table indexing.
