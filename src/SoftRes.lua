@@ -9,6 +9,13 @@ local M = {}
 local lib_stub = LibStub
 
 local keys = m.keys
+local function getn( t )
+  if m.getn then return m.getn( t ) end
+  if table.getn then return table.getn( t ) end
+  local count = 0
+  while t[ count + 1 ] do count = count + 1 end
+  return count
+end
 local transform = m.SoftResDataTransformer.transform
 
 --function M:new()
@@ -73,8 +80,40 @@ function M.new( db )
     if report then m.pretty_print( "Cleared soft-res data." ) end
   end
 
+  local function get_equivalent_ids( item_id )
+    if m.ItemEquivalence and m.ItemEquivalence.get_equivalent_item_ids then
+      return m.ItemEquivalence.get_equivalent_item_ids( item_id )
+    end
+    return { item_id }
+  end
+
   local function get( item_id )
-    return softres_data[ item_id ] and m.clone( softres_data[ item_id ].rollers ) or {}
+    local eq_ids = get_equivalent_ids( item_id )
+    local merged_rollers = {}
+    local roller_map = {}
+
+    for i = 1, getn( eq_ids ) do
+      local id = eq_ids[ i ]
+      local item = softres_data[ id ]
+      if item and item.rollers then
+        for j = 1, getn( item.rollers ) do
+          local roller = item.rollers[ j ]
+          local existing = roller_map[ roller.name ]
+          if not existing then
+            local cloned = m.clone( roller )
+            roller_map[ roller.name ] = cloned
+            table.insert( merged_rollers, cloned )
+          else
+            existing.rolls = existing.rolls + roller.rolls
+            if roller.sr_plus and (not existing.sr_plus or roller.sr_plus > existing.sr_plus) then
+              existing.sr_plus = roller.sr_plus
+            end
+          end
+        end
+      end
+    end
+
+    return merged_rollers
   end
 
   local function get_all_rollers()
@@ -102,12 +141,14 @@ function M.new( db )
   end
 
   local function is_player_softressing( player_name, item_id )
-    if item_id and not softres_data[ item_id ] then return false end
-
     if item_id then
-      local item = softres_data[ item_id ]
-      local player = item and find_roller( player_name, item.rollers )
-      if player and player.name == player_name then return true end
+      local eq_ids = get_equivalent_ids( item_id )
+      for i = 1, getn( eq_ids ) do
+        local id = eq_ids[ i ]
+        local item = softres_data[ id ]
+        local player = item and find_roller( player_name, item.rollers )
+        if player and player.name == player_name then return true end
+      end
 
       return false
     end
@@ -151,11 +192,22 @@ function M.new( db )
   end
 
   local function is_item_hardressed( item_id )
-    return hardres_data[ item_id ] and true or false
+    if hardres_data[ item_id ] then return true end
+    local eq_ids = get_equivalent_ids( item_id )
+    for i = 1, getn( eq_ids ) do
+      if hardres_data[ eq_ids[ i ] ] then return true end
+    end
+
+    return false
   end
 
   local function get_item_quality( item_id )
-    return softres_data[ item_id ] and softres_data[ item_id ].quality
+    if softres_data[ item_id ] then return softres_data[ item_id ].quality end
+    local eq_ids = get_equivalent_ids( item_id )
+    for i = 1, getn( eq_ids ) do
+      local id = eq_ids[ i ]
+      if softres_data[ id ] then return softres_data[ id ].quality end
+    end
   end
 
   return {
