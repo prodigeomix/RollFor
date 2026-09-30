@@ -2,11 +2,13 @@
 A World of Warcraft (1.12.1 and 2.5.2) addon that manages rolling for items.  
 
 ## New in this fork
+* **Onyxia's Lair Revamp & Broodcommander Axelus**: Full boss recognition and encounter tracking for Turtle WoW's revamped Onyxia's Lair, including *Broodcommander Axelus*.
+* **Sub-Threshold Reserved Loot Lifecycle**: AutoGroupLoot tracks soft-reserved items below the master loot threshold (e.g., Onyxia Hide Backpack), preventing premature reversion to group loot while reserved items remain on boss corpses.
 * **Modern raidres.top Integration**: Full support for the new `raidres.top` export format (`reservations`, `character.name`, `raidItemId`, and structured `srPlus` validation objects) alongside legacy `softres.it` and `raidres.fly.dev`. Properly handles sheets where `requireSrPlusValidation` is disabled.
 * **Sub-Threshold Reserved Loot Announcements**: Soft-reserved and hard-reserved items now bypass the master loot quality threshold filter (e.g., Onyxia Hide Backpack in an Epic-threshold raid is properly announced and queued).
 * **Multi-Reservation SR+ Preservation**: Preserves and applies the highest `sr_plus` value across duplicate or merged player reservations.
 * **Safe Long Chat Message Splitting**: Long announcements exceeding the 255-character client chat limit are cleanly split across messages without silent truncation.
-* **Custom Turtle WoW Raids Support**: Integrated boss encounters for Emerald Sanctum (*Solnius*, *Erennius*) and Lower Karazhan (*Moroes*, *Lord Blackwald II*, *Brood Queen Araxxna*, etc.).
+* **Custom Turtle WoW Raids Support**: Integrated boss encounters for Onyxia's Lair (*Broodcommander Axelus*), Emerald Sanctum (*Solnius*, *Erennius*), Lower Karazhan (*Moroes*, *Lord Blackwald II*, *Brood Queen Araxxna*, etc.), and custom Molten Core bosses.
 * **Strict Turtle WoW Lua 5.0 Engine Compliance**: 100% compatible with the Turtle WoW 1.18.1 client runtime.
 * New option `/rf config auto-class-announce` Toggle replace normal roll message with classes for items that has class restrictions.
 * New option `/rf config auto-tmog` Toggle automatically disable tmog roll option on trash loot.

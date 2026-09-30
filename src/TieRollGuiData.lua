@@ -99,7 +99,7 @@ function M.new( group_roster )
         type = "roll",
         roll_type = roll_type,
         player_name = player_name,
-        player_class = player.class,
+        player_class = player and player.class or nil,
         roll = nil,
       } )
     end

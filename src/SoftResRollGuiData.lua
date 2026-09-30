@@ -72,7 +72,7 @@ function M.new( softres, group_roster )
           type = "roll",
           roll_type = RollType.SoftRes,
           player_name = sr_player.name,
-          player_class = player.class,
+          player_class = player and player.class or nil,
           roll = nil,
           padding = first and 10 or nil
         } )

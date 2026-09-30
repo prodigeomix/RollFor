@@ -190,7 +190,7 @@ function M.new( popup_builder, content_transformer, db, config )
           local show_player_roles = config.show_player_roles()
           frame:SetWidth( config.show_player_roles() and 200 or 170 )
 
-          local player_role = show_player_roles and v.player_role and string.format( " (%s)", string.gsub( v.player_role, v.player_class, "" ) ) or ""
+          local player_role = show_player_roles and v.player_role and v.player_class and string.format( " (%s)", string.gsub( v.player_role, v.player_class, "" ) ) or ""
           frame.player_name:SetText( string.format( "%s%s", c( v.player_name, v.player_class ), player_role ) )
 
           if v.roll then

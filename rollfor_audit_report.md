@@ -280,6 +280,46 @@ Updated `extract_sr_plus()` in `src/SoftResDataTransformer.lua` to always extrac
 
 ---
 
+## Issue 9: Broodcommander Axelus Missing from BossList (v4.8.7)
+
+### Problem
+Turtle WoW revamped Onyxia's Lair by adding a new boss, Broodcommander Axelus. Because Axelus was absent from `BossList.lua["Onyxia's Lair"]`, `AutoMasterLoot` failed to activate upon pulling or targeting Axelus, and `AutoGroupLoot` did not detect his death or manage encounter loot. Players with soft-reserves for Axelus's drops (such as Ignited Obsidian Scale #33153, Yoxtez #33150, or Dragonhunter Javelin #33156) were impacted.
+
+### Fix
+Added `"Broodcommander Axelus"` to `BossList.zones["Onyxia's Lair"]`.
+
+---
+
+## Issue 10: Premature Group Loot Switch on Sub-Threshold Soft-Reserved Items (v4.8.7)
+
+### Problem
+When the master loot threshold is set to Epic (quality 4), rare (quality 3) items like the Onyxia Hide Backpack (#17966) were not counted as pending boss items in `AutoGroupLoot.lua` because they are below threshold and not BoP. As soon as all epic drops were awarded, `AutoGroupLoot` assumed all boss loot was distributed and reverted the raid to Group Loot while the soft-reserved backpack was still on the corpse.
+
+### Fix
+Updated `AutoGroupLoot.lua` to accept `softres` and include items on the corpse that are soft-reserved (`softres.get(item.id) > 0`) or hard-reserved (`softres.is_item_hardressed(item.id)`). `AutoGroupLoot` now keeps Master Loot active until all reserved items are awarded or the corpse is fully cleared.
+
+---
+
+## Issue 11: Nil Player Indexing Crash in Roll GUI Data (v4.8.7)
+
+### Problem
+In `SoftResRollGuiData.lua` and `TieRollGuiData.lua`, when iterating through soft-reserving players to populate GUI roll items, `group_roster.find_player(name)` returns `nil` if a player on the sheet is absent, disconnected, or using an unmatched alt name. Attempting to directly access `player.class` threw `attempt to index local 'player' (a nil value)`, crashing the roll GUI.
+
+### Fix
+Safeguarded player class lookup with `player and player.class or nil` in both `SoftResRollGuiData.lua` and `TieRollGuiData.lua`, and safeguarded `string.gsub` role formatting in `RollingPopup.lua`.
+
+---
+
+## Issue 12: Dead raidres.fly.dev URL in Missing SR Announcement (v4.8.7)
+
+### Problem
+Running `/src a` or `/src aw` broadcast a link to `https://raidres.fly.dev/res/<id>`, which is offline following the migration to `raidres.top`.
+
+### Fix
+Updated `main.lua` to broadcast `https://raidres.top/res/<id>` and updated `RollFor.toc` notes.
+
+---
+
 ## Lua 5.0 Compatibility Verification
 
 All source files were scanned with the `validate_lua50.py` compatibility validator (ported from DiscPriest's standard audit toolkit) which detects post-Lua 5.0 syntax and API usage violations.

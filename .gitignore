@@ -1,1 +1,8 @@
 update.sh
+
+# Local developer scratch, gate ledgers, helper scripts, and zips
+scratch/
+scripts/
+GATES.md
+\#*.txt
+*.zip

@@ -23,13 +23,24 @@ local getn = m.getn
 ---@param roll_controller RollController?
 ---@param rolling_logic RollingLogic?
 ---@param chat Chat?
-function M.new( loot_list, config, boss_list, player_info, roll_controller, rolling_logic, chat )
+---@param softres SoftRes?
+function M.new( loot_list, config, boss_list, player_info, roll_controller, rolling_logic, chat, softres )
   local m_boss_encounter = false
   local m_boss_name = nil
   local m_boss_killed = false
   local m_looting_boss = false
   local m_boss_items = {}
   local m_pending_group_loot = false
+
+  local function is_reserved( item_id )
+    if not softres or not item_id then return false end
+    if softres.is_item_hardressed and softres.is_item_hardressed( item_id ) then return true end
+    if softres.get then
+      local rollers = softres.get( item_id )
+      if rollers and getn( rollers ) > 0 then return true end
+    end
+    return false
+  end
 
   local function is_a_boss( name )
     if not name then return false end
@@ -125,10 +136,10 @@ function M.new( loot_list, config, boss_list, player_info, roll_controller, roll
     local target_name = m.target_name()
     local corpse_is_boss = (target_name and is_a_boss( target_name )) or m_boss_killed
 
-    -- Also check if items on the corpse are marked as boss loot or epic in raid
+    -- Also check if items on the corpse are marked as boss loot or epic in raid, or reserved
     if not corpse_is_boss then
       for _, item in ipairs( loot_list.get_items() ) do
-        if item.is_boss_loot or (item.quality and item.quality >= 4) then
+        if item.is_boss_loot or (item.quality and item.quality >= 4) or is_reserved( item.id ) then
           corpse_is_boss = true
           break
         end
@@ -143,8 +154,8 @@ function M.new( loot_list, config, boss_list, player_info, roll_controller, roll
 
       for _, item in ipairs( loot_list.get_items() ) do
         if item.type ~= "Coin" and item.id then
-          -- Track items that are master looter quality (>= threshold or BoP)
-          if (item.quality and item.quality >= threshold) or item.bind == m.ItemUtils.BindType.BindOnPickup then
+          -- Track items that are master looter quality (>= threshold or BoP) or reserved
+          if (item.quality and item.quality >= threshold) or item.bind == m.ItemUtils.BindType.BindOnPickup or is_reserved( item.id ) then
             m_boss_items[ item.id ] = (m_boss_items[ item.id ] or 0) + 1
             found_items = true
           end

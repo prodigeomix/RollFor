@@ -79,6 +79,7 @@ M.zones    = {
     "Nefarian"
   },
   [ "Onyxia's Lair" ] = {
+    "Broodcommander Axelus",
     "Onyxia"
   },
   [ "Ahn'Qiraj" ] = {
