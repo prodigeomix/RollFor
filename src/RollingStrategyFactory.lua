@@ -141,7 +141,7 @@ function M.new(
     local rollers = m.map( players,
       ---@param player RollingPlayer
       function( player )
-        return make_rolling_player( player.name, player.class, player.role, player.online, 1, player.plus_ones )
+        return make_rolling_player( player.name, player.class, player.role, player.online, 1, player.plus_ones, player.sr_plus )
       end
     )
 

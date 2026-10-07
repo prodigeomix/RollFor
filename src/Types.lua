@@ -201,8 +201,10 @@ end
 ---@param role string
 ---@param online boolean
 ---@param rolls number
+---@param plus_ones number?
+---@param sr_plus number?
 ---@return RollingPlayer
-function M.make_rolling_player( name, class, role, online, rolls, plus_ones )
+function M.make_rolling_player( name, class, role, online, rolls, plus_ones, sr_plus )
   return {
     name = name,
     class = class,
@@ -210,7 +212,8 @@ function M.make_rolling_player( name, class, role, online, rolls, plus_ones )
     online = online,
     rolls = rolls,
     type = PlayerType.RollingPlayer,
-    plus_ones = plus_ones
+    plus_ones = plus_ones,
+    sr_plus = sr_plus
   }
 end
 

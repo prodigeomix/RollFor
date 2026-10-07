@@ -97,4 +97,22 @@ function SoftResRollGuiDataSpec:should_add_roll_and_sort_correctly()
   lu.assertEquals( result[ 2 ].roll, 45 )
 end
 
+function SoftResRollGuiDataSpec:should_include_sr_plus_in_gui_data()
+  local group_roster = mock_group_roster( { p( "Pysanka", "Paladin" ), p( "Galahadt", "Paladin" ) } )
+  local softres = mock_softres( 61522, {
+    { name = "Pysanka", rolls = 1, sr_plus = 50 },
+    { name = "Galahadt", rolls = 1 }
+  } )
+
+  local gui_data = mod.new( softres, group_roster )
+  gui_data.start( 61522 )
+
+  local result = gui_data.get()
+  lu.assertEquals( #result, 2 )
+  lu.assertEquals( result[ 1 ].player_name, "Pysanka" )
+  lu.assertEquals( result[ 1 ].sr_plus, 50 )
+  lu.assertEquals( result[ 2 ].player_name, "Galahadt" )
+  lu.assertEquals( result[ 2 ].sr_plus, nil )
+end
+
 os.exit( lu.LuaUnit.run( "-o", "text", "-v", "-T", "Spec", "-m", "should" ) )
