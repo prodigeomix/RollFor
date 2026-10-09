@@ -145,6 +145,7 @@ function M.new( popup_builder, awarded_loot, version_broadcast, event_bus, confi
       this.changelog.content.parent = this.changelog
 
       local changelog = {
+        { ver = "4.8.9", text = "Restore original clean SR+ point handling on tie rolls, non-SR rolls, and popup; add softres.it rollBonus support" },
         { ver = "4.8.1", text = "Add new MC bosses to boss list. Refactor keybindings" },
         { ver = "4.8.0", text = "Added +1 handling" },
         { ver = "4.7.13", text = "Add option to show player roles in rolling popup." },

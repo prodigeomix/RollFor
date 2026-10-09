@@ -184,24 +184,17 @@ function M.new( popup_builder, content_transformer, db, config )
           local roll_type_text = m.roll_type_abbrev( v.roll_type )
           if v.roll_type == RollType.MainSpec and v.plus_ones > 0 then
             roll_type_text = roll_type_text .. " +" .. v.plus_ones
-          elseif v.roll_type == RollType.SoftRes and v.sr_plus and v.sr_plus > 0 then
-            roll_type_text = roll_type_text .. " +" .. v.sr_plus
           end
           frame.roll_type:SetText( m.roll_type_color( v.roll_type, roll_type_text ) )
 
           local show_player_roles = config.show_player_roles()
-          frame:SetWidth( config.show_player_roles() and 220 or 190 )
+          frame:SetWidth( config.show_player_roles() and 200 or 170 )
 
           local player_role = show_player_roles and v.player_role and v.player_class and string.format( " (%s)", string.gsub( v.player_role, v.player_class, "" ) ) or ""
           frame.player_name:SetText( string.format( "%s%s", c( v.player_name, v.player_class ), player_role ) )
 
           if v.roll then
-            local roll_text = tostring( v.roll )
-            if v.sr_plus and v.sr_plus > 0 then
-              local base = v.roll - v.sr_plus
-              roll_text = string.format( "%d+%d", base, v.sr_plus )
-            end
-            frame.roll:SetText( blue( roll_text ) )
+            frame.roll:SetText( blue( v.roll ) )
             frame.icon:Hide()
           else
             frame.roll:SetText( "" )

@@ -830,4 +830,68 @@ function SoftResPlusSpec:should_use_sr_plus_values()
   )
 end
 
+function SoftResPlusSpec:should_not_modify_tie_rolls_with_sr_plus()
+  -- Given
+  local loot_facade, chat = mock_loot_facade(), mock_chat()
+  local item, item2, p1, p2 = i( "Hearthstone", 123 ), i( "Bag", 69 ), p( "Psikutas" ), p( "Obszczymucha" )
+  local rf = new_roll_for()
+      :loot_facade( loot_facade )
+      :raid_roster( p1, p2 )
+      :chat( chat )
+      :soft_res_data( sr( p1.name, 69, nil, 30 ), sr( p2.name, 69 ) )
+      :build()
+  u.mock( "GiveMasterLoot", function( slot ) loot_facade.notify( "LootSlotCleared", slot ) end )
+
+  -- Open loot and select item
+  loot_facade.notify( "LootOpened", item, item2 )
+  chat.raid( "Princess Kenny dropped 2 items:" )
+  chat.raid( "1. [Bag] (SR by Obszczymucha and Psikutas (+30))" )
+  chat.raid( "2. [Hearthstone]" )
+
+  rf.loot_frame.click( 1 )
+  rf.rolling_popup.click( "Roll" )
+  chat.raid_warning( "Roll for [Bag]: SR by Obszczymucha and Psikutas (+30)" )
+
+  -- When: p1 rolls 40 (+30 = 70), p2 rolls 70 (+0 = 70) -> tie at 70!
+  rf.roll( p1, 40, 1, 100 )
+  rf.roll( p2, 70, 1, 100 )
+
+  -- Then: Tie announcement cleanly announces 70 without mangled arithmetic
+  chat.console( "RollFor: Obszczymucha and Psikutas rolled the highest (70) for [Bag] (SR)." )
+  chat.raid( "Obszczymucha and Psikutas rolled the highest (70) for [Bag] (SR)." )
+  rf.rolling_popup.should_display(
+    item_link( item2, 1 ),
+    softres_roll( p2, 70, 11 ),
+    softres_roll( p1, 70 ),
+    text( "There was a tie (70):", 11 ),
+    roll_placeholder( p2, 11 ),
+    roll_placeholder( p1 ),
+    empty_line( 5 )
+  )
+
+  -- Tick to start tiebreaker roll
+  rf.ace_timer.tick()
+  chat.raid( "Obszczymucha and Psikutas /roll for [Bag] now." )
+
+  -- When: Tiebreaker rolls are pure 1-100 rolls (SR+ does not apply to tie rolls)
+  -- p2 rolls 15, p1 rolls 25
+  rf.roll( p2, 15, 1, 100 )
+  rf.roll( p1, 25, 1, 100 )
+
+  -- Then: Winner announcement uses the raw tiebreaker roll 25 (NOT 25 - 30 = -5!)
+  chat.console( "RollFor: Psikutas re-rolled the highest (25) for [Bag] (SR)." )
+  chat.raid( "Psikutas re-rolled the highest (25) for [Bag] (SR)." )
+  chat.console( "RollFor: Rolling for [Bag] finished." )
+  rf.rolling_popup.should_display(
+    item_link( item2, 1 ),
+    softres_roll( p2, 70, 11 ),
+    softres_roll( p1, 70 ),
+    text( "There was a tie (70):", 11 ),
+    softres_roll( p1, 25, 11 ),
+    softres_roll( p2, 15 ),
+    text( "Psikutas wins the soft-res roll with 25.", 11 ),
+    buttons( "AwardWinner", "RaidRoll", "AwardOther", "Close" )
+  )
+end
+
 os.exit( lu.LuaUnit.run() )

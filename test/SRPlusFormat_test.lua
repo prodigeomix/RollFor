@@ -142,4 +142,58 @@ function SRPlusFormatSpec:should_pick_max_sr_plus_when_both_reservations_have_va
   eq( 2, sr_result[ 300 ].rollers[ 1 ].rolls )
 end
 
+function SRPlusFormatSpec:should_extract_sr_plus_from_softres_it_rollBonus_on_player()
+  local data = {
+    metadata = { id = "softres_test", origin = "softres" },
+    softreserves = {
+      {
+        name = "Psikutas",
+        class = "warrior",
+        rollBonus = 15,
+        items = {
+          { id = 40400 }
+        }
+      }
+    }
+  }
+  local sr_result, hr_result = mod.transform( data )
+  eq( 15, sr_result[ 40400 ].rollers[ 1 ].sr_plus )
+  eq( "Psikutas", sr_result[ 40400 ].rollers[ 1 ].name )
+end
+
+function SRPlusFormatSpec:should_not_extract_sr_plus_when_rollBonus_is_zero()
+  local data = {
+    metadata = { id = "softres_test", origin = "softres" },
+    softreserves = {
+      {
+        name = "Psikutas",
+        class = "warrior",
+        rollBonus = 0,
+        items = {
+          { id = 40400 }
+        }
+      }
+    }
+  }
+  local sr_result, hr_result = mod.transform( data )
+  eq( nil, sr_result[ 40400 ].rollers[ 1 ].sr_plus )
+end
+
+function SRPlusFormatSpec:should_extract_sr_plus_from_softres_it_rollBonus_on_item()
+  local data = {
+    metadata = { id = "softres_test", origin = "softres" },
+    softreserves = {
+      {
+        name = "Psikutas",
+        class = "warrior",
+        items = {
+          { id = 40400, rollBonus = 25 }
+        }
+      }
+    }
+  }
+  local sr_result, hr_result = mod.transform( data )
+  eq( 25, sr_result[ 40400 ].rollers[ 1 ].sr_plus )
+end
+
 os.exit( lu.LuaUnit.run( "-o", "text", "-v", "-T", "Spec", "-m", "should" ) )

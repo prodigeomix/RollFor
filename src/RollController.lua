@@ -860,11 +860,7 @@ function M.new(
   local function on_roll( player_name, player_class, roll_type, roll, plus_ones )
     M.debug.add( string.format( "on_roll( %s, %s, %s, %s )", player_name, player_class, roll_type, roll ) )
     local roll_tracker = get_roll_tracker( currently_displayed_item and currently_displayed_item.id )
-    local roller = m.find( player_name, softres.get_all_rollers(), "name")
-    local sr_players = currently_displayed_item and softres.get( currently_displayed_item.id ) or {}
-    local sr_player = m.find( player_name, sr_players, "name" )
-    local sr_plus = sr_player and sr_player.sr_plus
-    roll_tracker.add( player_name, player_class, roller and roller.role, roll_type, roll, plus_ones, sr_plus )
+    roll_tracker.add( player_name, player_class, roller and roller.role, roll_type, roll, plus_ones )
 
     local data, current_iteration = roll_tracker.get()
     local strategy_type = current_iteration and current_iteration.rolling_strategy
@@ -876,7 +872,6 @@ function M.new(
         player_role = roller and roller.role,
         roll_type = roll_type,
         plus_ones = plus_ones,
-        sr_plus = sr_plus,
         roll = roll,
       } )
     end

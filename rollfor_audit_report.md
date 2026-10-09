@@ -320,6 +320,34 @@ Updated `main.lua` to broadcast `https://raidres.top/res/<id>` and updated `Roll
 
 ---
 
+## Issue 13: SR+ Point Treatment Regression on Tie Rolls, Non-SR Rolls, and Softres.it Imports (v4.8.9)
+
+### Problem
+Users reported a regression regarding SR+ points compared to the original addon from the original author (`sica42/RollFor`). Investigation revealed multiple interconnected root causes introduced in recent versions (specifically commit `ebf9b43`):
+
+1. **Tie Roll SR+ Subtraction Corruption:**
+   `TieRollingLogic` accepts raw 1–100 tiebreaker rolls (SR+ bonuses are applied only to initial SR rolls to determine winners/ties, not during tiebreakers). However, commit `ebf9b43` attached `sr_plus` to tie rolls in `RollController.lua` and `RollingStrategyFactory.lua`. In `RollResultAnnouncer.lua`, `announce_winner` blindly subtracted `sr_player.sr_plus` from the winner's tiebreaker roll, announcing corrupted arithmetic (e.g. rolling 25 raw announced as `-5+30=25`, producing negative numbers and confusing raid chat).
+2. **Mangled Tie Announcements (`on_tie`):**
+   `on_tie` in `RollResultAnnouncer.lua` was modified to format `sr_plus` using `players[1].name`. In a tie where one player had SR+ and another did not, this either falsely credited both players with the first player's bonus (e.g. announcing `80+20=100` for both) or omitted the bonus entirely if `players[1]` had 0 SR+. The original author cleanly announced the tied total roll value `(roll_value)` achieved by the tied rollers.
+3. **Non-SR Roll Announce Pollution:**
+   In `RollResultAnnouncer.lua`, `announce_winner` did not check `roll_type == RT.SoftRes` or `not rerolling`. If a player with SR+ on an item won on a MainSpec, OffSpec, or tiebreaker reroll, the announcer subtracted their SR+ bonus from their raw roll.
+4. **Popup Display Distortion:**
+   `RollingPopup.lua` attempted to display `base+sr_plus` by subtracting `sr_plus` from `v.roll`, while widening button containers in `GuiElements.lua` and frames in `RollingPopup.lua`. On tie rolls this produced negative numbers (e.g. `-5+20`), whereas the original author cleanly displayed the total accepted roll (`blue(v.roll)`) within standard-sized containers.
+5. **Softres.it `rollBonus` Omission:**
+   `SoftResDataTransformer.lua` only checked `sr_plus` / `srPlus`, missing the `rollBonus` / `roll_bonus` fields used by `softres.it` on player (`sr.rollBonus`) and item entries. Additionally, exports containing `rollBonus: 0` were at risk of being treated as truthy because `0` is truthy in Lua.
+
+### Fix
+1. **Restored Announcer SR+ Guard:**
+   In `src/RollResultAnnouncer.lua`, restricted `sr_plus(value)` in `announce_winner` strictly to `roll_type == RT.SoftRes and not rerolling` and `sr_player.sr_plus > 0`. Reverted `on_tie` to cleanly announce `roll_value` directly as designed by the original author.
+2. **Reverted Tie Roll SR+ Pollution:**
+   In `src/RollingStrategyFactory.lua`, reverted `tie_roll` to pass 6 parameters to `make_rolling_player` (no `player.sr_plus`). Reverted `src/Types.lua`, `src/RollController.lua`, and `src/RollTracker.lua` to exclude `sr_plus` from tie rolls.
+3. **Restored Clean Popup & GUI Layout:**
+   In `src/RollingPopup.lua`, restored clean roll rendering (`blue(v.roll)`), reverted role frame widths to 200/170, and reverted button containers in `src/GuiElements.lua` to 35/37.
+4. **Added `rollBonus` Extraction with Positive Value Guard:**
+   Updated `extract_sr_plus()` in `src/SoftResDataTransformer.lua` to support `item.rollBonus`, `item.roll_bonus`, and player-level `sr.rollBonus`, requiring `val > 0` so zero-point bonuses are safely ignored.
+
+---
+
 ## Lua 5.0 Compatibility Verification
 
 All source files were scanned with the `validate_lua50.py` compatibility validator (ported from DiscPriest's standard audit toolkit) which detects post-Lua 5.0 syntax and API usage violations.

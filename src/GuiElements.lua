@@ -249,7 +249,7 @@ function M.roll( parent )
 
   frame:EnableMouse( true )
 
-  local roll_container = M.create_text_in_container( "Button", frame, 45, "RIGHT" )
+  local roll_container = M.create_text_in_container( "Button", frame, 35, "RIGHT" )
   roll_container:SetPoint( "LEFT", 0, 0 )
   frame.roll = roll_container.inner
 
@@ -261,7 +261,7 @@ function M.roll( parent )
   player_name:SetPoint( "CENTER", frame, "CENTER", 0, 0 )
   frame.player_name = player_name
 
-  local roll_type_container = M.create_text_in_container( "Button", frame, 48, "LEFT" )
+  local roll_type_container = M.create_text_in_container( "Button", frame, 37, "LEFT" )
   roll_type_container:SetPoint( "RIGHT", 0, 0 )
   frame.roll_type = roll_type_container.inner
 

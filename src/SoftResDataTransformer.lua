@@ -52,26 +52,31 @@ local make_roller = m.Types.make_roller
 local function extract_sr_plus( item )
   if not item then return nil end
 
+  local val = nil
+
   -- Old raidres.fly.dev format: flat string or number
   if type( item.sr_plus ) == "string" or type( item.sr_plus ) == "number" then
-    return tonumber( item.sr_plus )
-  end
-
+    val = tonumber( item.sr_plus )
   -- New raidres.top format: camelCase field, flat string or number
-  if type( item.srPlus ) == "string" or type( item.srPlus ) == "number" then
-    return tonumber( item.srPlus )
-  end
-
+  elseif type( item.srPlus ) == "string" or type( item.srPlus ) == "number" then
+    val = tonumber( item.srPlus )
   -- New raidres.top format: nested {value = N, isValid = BOOL}
   -- Note: raidres defaults isValid to false when requireSrPlusValidation is false.
   -- Always extract the numeric value if present so valid bonuses are not lost.
-  if type( item.srPlus ) == "table" and item.srPlus.value then
-    return tonumber( item.srPlus.value )
+  elseif type( item.srPlus ) == "table" and item.srPlus.value then
+    val = tonumber( item.srPlus.value )
+  -- Fallback: old field as fallback-table
+  elseif type( item.sr_plus ) == "table" and item.sr_plus.value then
+    val = tonumber( item.sr_plus.value )
+  -- softres.it format: rollBonus or roll_bonus
+  elseif type( item.rollBonus ) == "string" or type( item.rollBonus ) == "number" then
+    val = tonumber( item.rollBonus )
+  elseif type( item.roll_bonus ) == "string" or type( item.roll_bonus ) == "number" then
+    val = tonumber( item.roll_bonus )
   end
 
-  -- Fallback: old field as fallback-table
-  if type( item.sr_plus ) == "table" and item.sr_plus.value then
-    return tonumber( item.sr_plus.value )
+  if val and val > 0 then
+    return val
   end
 
   return nil
@@ -111,7 +116,7 @@ function M.transform( data )
       }
 
       local roller = find_roller( roller_name, sr_result[ item_id ].rollers )
-      local sr_plus_val = extract_sr_plus( entry )
+      local sr_plus_val = extract_sr_plus( entry ) or extract_sr_plus( character )
 
       if not roller then
         roller = make_roller( roller_name, 1 )

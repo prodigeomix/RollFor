@@ -31,13 +31,15 @@ function M.new( chat, roll_controller, softres, config )
     local item = winners[ 1 ].item
 
     local function sr_plus( value )
-      local sr_players = softres.get( item.id )
-      local sr_player = m.find( winners[ 1 ].name, sr_players, 'name' )
+      if roll_type == RT.SoftRes and not rerolling then
+        local sr_players = softres.get( item.id )
+        local sr_player = m.find( winners[ 1 ].name, sr_players, 'name' )
 
-      if sr_player and sr_player.sr_plus then
-        local plus_value = sr_player.sr_plus
-        value = value - plus_value
-        return string.format( "%s+%s=%s", value, plus_value, value + plus_value )
+        if sr_player and sr_player.sr_plus and sr_player.sr_plus > 0 then
+          local plus_value = sr_player.sr_plus
+          value = value - plus_value
+          return string.format( "%s+%s=%s", value, plus_value, value + plus_value )
+        end
       end
 
       return value
@@ -134,26 +136,13 @@ function M.new( chat, roll_controller, softres, config )
     local top_rollers_str_colored = m.prettify_table( player_names, hl )
     local roll_type_str = roll_type == RT.MainSpec and "" or string.format( " (%s)", m.roll_type_abbrev_chat( roll_type ) )
 
-    local function sr_plus( value )
-      local sr_players = softres.get( item.id )
-      local sr_player = m.find( players[ 1 ].name, sr_players, 'name' )
-
-      if sr_player and sr_player.sr_plus then
-        local plus_value = sr_player.sr_plus
-        value = value - plus_value
-        return string.format( "%s+%s=%s", value, plus_value, value + plus_value )
-      end
-
-      return value
-    end
-
     local function message( rollers, f )
       return string.format(
         "%s %srolled the %shighest (%s) for %s%s.",
         rollers,
         rerolling and "re-" or "",
         top_roll and "" or "next ",
-        f and f( sr_plus( roll_value ) ) or sr_plus( roll_value ),
+        f and f( roll_value ) or roll_value,
         -- item_count and item_count > 1 and string.format( "%sx", item_count ) or "",
         item.link,
         roll_type_str
