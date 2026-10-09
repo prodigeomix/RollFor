@@ -22,8 +22,9 @@ end
 
 ---@param player Player
 ---@param padding number?
-function M.sr_roll_placeholder( player, padding )
-  return M.roll_placeholder( player, RT.SoftRes, padding )
+---@param sr_plus number?
+function M.sr_roll_placeholder( player, padding, sr_plus )
+  return { type = "roll", player_name = player.name, player_class = player.class, player_role = nil, roll_type = RT.SoftRes, padding = padding, sr_plus = sr_plus }
 end
 
 ---@param player Player
@@ -46,8 +47,10 @@ end
 
 ---@param player Player
 ---@param padding number?
-function M.softres_roll( player, roll, padding, plus_ones )
-  return { type = "roll", player_name = player.name, player_class = player.class, player_role = nil, roll_type = RT.SoftRes, roll = roll, padding = padding, plus_ones = plus_ones }
+---@param plus_ones number?
+---@param sr_plus number?
+function M.softres_roll( player, roll, padding, plus_ones, sr_plus )
+  return { type = "roll", player_name = player.name, player_class = player.class, player_role = nil, roll_type = RT.SoftRes, roll = roll, padding = padding, plus_ones = plus_ones, sr_plus = sr_plus }
 end
 
 ---@param message string

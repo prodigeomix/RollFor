@@ -110,6 +110,7 @@ function M.new( config )
         player_class = roll.player_class,
         player_role = roll.player_role,
         roll = roll.roll,
+        sr_plus = roll.sr_plus,
         padding = i == 1 and top_padding or nil,
       } )
     end

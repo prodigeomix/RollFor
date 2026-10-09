@@ -747,7 +747,7 @@ function SoftResPlusSpec:should_use_sr_plus_values()
 
   -- Then
   rf.loot_frame.should_display(
-    enabled_item( 1, "Bag", "SR", { "Soft-ressed by", "Obszczymucha", "Psikutas" } ),
+    enabled_item( 1, "Bag", "SR", { "Soft-ressed by", "Obszczymucha", "Psikutas (+30)" } ),
     enabled_item( 2, "Hearthstone" )
   )
   chat.raid( "Princess Kenny dropped 2 items:" )
@@ -760,13 +760,13 @@ function SoftResPlusSpec:should_use_sr_plus_values()
 
   -- Then
   rf.loot_frame.should_display(
-    selected_item( 1, "Bag", "SR", { "Soft-ressed by", "Obszczymucha", "Psikutas" } ),
+    selected_item( 1, "Bag", "SR", { "Soft-ressed by", "Obszczymucha", "Psikutas (+30)" } ),
     disabled_item( 2, "Hearthstone" )
   )
   rf.rolling_popup.should_display(
     item_link( item2, 1 ),
     roll_placeholder( p2, 11 ),
-    roll_placeholder( p1 ),
+    roll_placeholder( p1, nil, 30 ),
     buttons( "Roll", "AwardOther", "Close" )
   )
 
@@ -778,7 +778,7 @@ function SoftResPlusSpec:should_use_sr_plus_values()
   rf.rolling_popup.should_display(
     item_link( item2, 1 ),
     roll_placeholder( p2, 11 ),
-    roll_placeholder( p1 ),
+    roll_placeholder( p1, nil, 30 ),
     text( "Rolling ends in 8 seconds.", 11 ),
     buttons( "Cancel" )
   )
@@ -789,7 +789,7 @@ function SoftResPlusSpec:should_use_sr_plus_values()
   -- Then
   rf.rolling_popup.should_display(
     item_link( item2, 1 ),
-    softres_roll( p1, 119, 11 ),
+    softres_roll( p1, 119, 11, nil, 30 ),
     roll_placeholder( p2 ),
     text( "Rolling ends in 8 seconds.", 11 ),
     buttons( "FinishEarly", "Cancel" )
@@ -804,7 +804,7 @@ function SoftResPlusSpec:should_use_sr_plus_values()
   chat.console( "RollFor: Rolling for [Bag] finished." )
   rf.rolling_popup.should_display(
     item_link( item2, 1 ),
-    softres_roll( p1, 119, 11 ),
+    softres_roll( p1, 119, 11, nil, 30 ),
     softres_roll( p2, 99 ),
     text( "Psikutas wins the soft-res roll with 119.", 11 ),
     buttons( "AwardWinner", "RaidRoll", "AwardOther", "Close" )
@@ -862,7 +862,7 @@ function SoftResPlusSpec:should_not_modify_tie_rolls_with_sr_plus()
   rf.rolling_popup.should_display(
     item_link( item2, 1 ),
     softres_roll( p2, 70, 11 ),
-    softres_roll( p1, 70 ),
+    softres_roll( p1, 70, nil, nil, 30 ),
     text( "There was a tie (70):", 11 ),
     roll_placeholder( p2, 11 ),
     roll_placeholder( p1 ),
@@ -885,7 +885,7 @@ function SoftResPlusSpec:should_not_modify_tie_rolls_with_sr_plus()
   rf.rolling_popup.should_display(
     item_link( item2, 1 ),
     softres_roll( p2, 70, 11 ),
-    softres_roll( p1, 70 ),
+    softres_roll( p1, 70, nil, nil, 30 ),
     text( "There was a tie (70):", 11 ),
     softres_roll( p1, 25, 11 ),
     softres_roll( p2, 15 ),
@@ -894,4 +894,48 @@ function SoftResPlusSpec:should_not_modify_tie_rolls_with_sr_plus()
   )
 end
 
-os.exit( lu.LuaUnit.run() )
+function SoftResPlusSpec:should_not_announce_asymmetric_sr_plus_formula_for_tied_multi_winners()
+  -- Given: 3 players softres 2 bags. p1 has +30, p2 has +0, p3 has +0.
+  local loot_facade, chat = mock_loot_facade(), mock_chat()
+  local item, item2, p1, p2, p3 = i( "Hearthstone", 123 ), i( "Bag", 69 ), p( "Psikutas" ), p( "Obszczymucha" ), p( "Jimmy" )
+  local rf = new_roll_for()
+      :loot_facade( loot_facade )
+      :raid_roster( p1, p2, p3 )
+      :chat( chat )
+      :soft_res_data( sr( p1.name, 69, nil, 30 ), sr( p2.name, 69 ), sr( p3.name, 69 ) )
+      :build()
+  u.mock( "GiveMasterLoot", function( slot ) loot_facade.notify( "LootSlotCleared", slot ) end )
+
+  -- Open loot (2 bags drop)
+  loot_facade.notify( "LootOpened", item, item2, item2 )
+  chat.raid( "Princess Kenny dropped 3 items:" )
+  chat.raid( "1. 2x[Bag] (SR by Jimmy, Obszczymucha and Psikutas (+30))" )
+  chat.raid( "2. [Hearthstone]" )
+  rf.loot_frame.click( 1 )
+  rf.rolling_popup.click( "Roll" )
+  chat.raid_warning( "Roll for 2x[Bag]: SR by Jimmy, Obszczymucha and Psikutas (+30). 2 top rolls win." )
+
+  -- When: p1 rolls 40 (+30 = 70), p2 rolls 70 (+0 = 70), p3 rolls 10 (+0 = 10).
+  -- Both p1 and p2 tie for top 2 rolls and win the 2 items!
+  rf.roll( p1, 40, 1, 100 )
+  rf.roll( p2, 70, 1, 100 )
+  rf.roll( p3, 10, 1, 100 )
+
+  -- Then: Asymmetric SR+ formula is NOT announced for Obszczymucha! Both announce with clean 70!
+  chat.console( "RollFor: Obszczymucha and Psikutas rolled the highest (70) for [Bag] (SR)." )
+  chat.raid( "Obszczymucha and Psikutas rolled the highest (70) for [Bag] (SR)." )
+  chat.console( "RollFor: Rolling for [Bag] finished." )
+  rf.rolling_popup.should_display(
+    item_link( item2, 2 ),
+    softres_roll( p2, 70, 11 ),
+    softres_roll( p1, 70, nil, nil, 30 ),
+    softres_roll( p3, 10 ),
+    text( "Obszczymucha wins the soft-res roll with 70.", 11 ),
+    individual_award_button,
+    text( "Psikutas wins the soft-res roll with 70.", 8 ),
+    individual_award_button,
+    buttons( "RaidRoll", "AwardOther", "Close" )
+  )
+end
+
+os.exit( lu.LuaUnit.run( "-o", "text", "-v", "-T", "Spec", "-m", "should" ) )

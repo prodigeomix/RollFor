@@ -22,6 +22,7 @@ local S = m.Types.RollingStatus
 ---@field roll_type RollType
 ---@field plus_ones number
 ---@field roll number?
+---@field sr_plus number?
 
 ---@class RollIteration
 ---@field rolling_strategy RollingStrategyType
@@ -118,12 +119,12 @@ function M.new( item_on_roll )
     end )
   end
 
-  local function add( player_name, player_class, player_role, roll_type, roll, plus_ones )
+  local function add( player_name, player_class, player_role, roll_type, roll, plus_ones, sr_plus )
     if current_iteration == 0 then return end
     M.debug.add( "add" )
 
     ---@type RollData
-    local data = { player_name = player_name, player_class = player_class, player_role = player_role, roll_type = roll_type, roll = roll, plus_ones = plus_ones }
+    local data = { player_name = player_name, player_class = player_class, player_role = player_role, roll_type = roll_type, roll = roll, plus_ones = plus_ones, sr_plus = sr_plus }
     local iteration = iterations[ current_iteration ]
 
     if roll and (iteration.rolling_strategy == RS.SoftResRoll or iteration.rolling_strategy == RS.TieRoll) then
@@ -142,7 +143,7 @@ function M.new( item_on_roll )
     for _, player in ipairs( players ) do
       for _ = 1, player.rolls do
         ---@type RollData
-        local data = { player_name = player.name, player_class = player.class, player_role = player.role, roll_type = RT.SoftRes, plus_ones = player.plus_ones }
+        local data = { player_name = player.name, player_class = player.class, player_role = player.role, roll_type = RT.SoftRes, plus_ones = player.plus_ones, sr_plus = player.sr_plus }
         table.insert( result, data )
       end
     end
@@ -173,7 +174,7 @@ function M.new( item_on_roll )
 
       for _, player in ipairs( soft_ressers or {} ) do
         for _ = 1, player.rolls or 1 do
-          add( player.name, player.class, player.role, RT.SoftRes, nil, player.plus_ones )
+          add( player.name, player.class, player.role, RT.SoftRes, nil, player.plus_ones, player.sr_plus )
         end
       end
     end
@@ -207,7 +208,7 @@ function M.new( item_on_roll )
 
     for _, player in ipairs( required_rolling_players or {} ) do
       for _ = 1, player.rolls or 1 do
-        add( player.name, player.class, player.role, rolling_strategy == RS.SoftResRoll and RT.SoftRes or RS.TieRoll, player.plus_ones )
+        add( player.name, player.class, player.role, rolling_strategy == RS.SoftResRoll and RT.SoftRes or RS.TieRoll, nil, player.plus_ones, rolling_strategy == RS.SoftResRoll and player.sr_plus or nil )
       end
     end
   end

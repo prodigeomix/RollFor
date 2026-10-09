@@ -188,7 +188,9 @@ function M.new( softres, group_roster, name_matcher, ace_timer, absent_softres, 
     local colorize = function( player )
       local grouped_player = group_roster.find_player( player.name )
       local name = grouped_player and m.colorize_player_by_class( grouped_player.name, grouped_player.class ) or colors.red( player.name )
-      return player.rolls > 1 and string.format( "%s (%s)", name, player.rolls ) or string.format( "%s", name )
+      local roll_count = player.rolls and player.rolls > 1 and string.format( " (%s)", player.rolls ) or ""
+      local sr_plus = player.sr_plus and player.sr_plus > 0 and string.format( " (+%d)", player.sr_plus ) or ""
+      return string.format( "%s%s%s", name, roll_count, sr_plus )
     end
 
     if item_count > 0 then

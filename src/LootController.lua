@@ -109,14 +109,16 @@ function M.new( player_info, loot_facade, loot_list, loot_frame, roll_controller
 
     if getn( sr_players ) == 1 then
       local player = sr_players[ 1 ]
-      table.insert( result, m.colorize_player_by_class( player.name, player.class ) )
+      local sr_plus = player.sr_plus and player.sr_plus > 0 and hl( string.format( " (+%d)", player.sr_plus ) ) or ""
+      table.insert( result, string.format( "%s%s", m.colorize_player_by_class( player.name, player.class ), sr_plus ) )
 
       return result
     end
 
     for _, player in ipairs( sr_players ) do
       local rolls = player.rolls and player.rolls > 1 and hl( string.format( " [%s rolls]", player.rolls ) ) or ""
-      table.insert( result, string.format( "%s%s", m.colorize_player_by_class( player.name, player.class ), rolls ) )
+      local sr_plus = player.sr_plus and player.sr_plus > 0 and hl( string.format( " (+%d)", player.sr_plus ) ) or ""
+      table.insert( result, string.format( "%s%s%s", m.colorize_player_by_class( player.name, player.class ), rolls, sr_plus ) )
     end
 
     return result

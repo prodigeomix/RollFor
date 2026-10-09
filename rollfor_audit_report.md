@@ -346,6 +346,25 @@ Users reported a regression regarding SR+ points compared to the original addon 
 4. **Added `rollBonus` Extraction with Positive Value Guard:**
    Updated `extract_sr_plus()` in `src/SoftResDataTransformer.lua` to support `item.rollBonus`, `item.roll_bonus`, and player-level `sr.rollBonus`, requiring `val > 0` so zero-point bonuses are safely ignored.
 
+
+---
+
+## Issue 14: First-Class SR+ Badges, Dropped Loot Indicators, and Multi-Winner Tie Guards (v4.8.10)
+
+### Enhancements
+Building on the restoration of original author SR+ behavior in v4.8.9, four architectural refinements were implemented to bring first-class visibility and robustness to SR+ loot handling:
+
+1. **Master Looter Dropped Loot Tooltips:**
+   - In `src/LootController.lua`, updated `make_comment_tooltip` to display `(+N)` next to reserver names on dropped items while preserving single-winner roll count suppression.
+2. **`/srs` Console Output:**
+   - In `src/SoftResCheck.lua`, updated `colorize` so running `/srs` displays `Player (+N)` for all players with SR+ bonuses alongside class coloring and roll counts.
+3. **First-Class `SR +N` Badges in Live Rolling Popup:**
+   - In `src/RollTracker.lua`, added an explicit `sr_plus` field to `RollData`, cleanly separating SR+ bonuses from Main Spec `plus_ones`.
+   - In `src/RollingPopupContentTransformer.lua` and `src/RollingPopup.lua`, passed `sr_plus` to render a colored `SR +N` badge (e.g. `SR +30`) in the roll type column.
+   - In `src/GuiElements.lua`, expanded `roll_type_container` width to 40px to comfortably fit `SR +N` badges without altering roll number display.
+4. **Multi-Winner Asymmetric Tie Guard:**
+   - In `src/RollResultAnnouncer.lua`, added a symmetry guard to `sr_plus(value)`: when multiple winners tie for dropped items (e.g. 2 bags) and possess differing SR+ bonuses, RollFor outputs the clean winning score `(70)` rather than claiming an asymmetric formula like `(40+30=70)`.
+
 ---
 
 ## Lua 5.0 Compatibility Verification

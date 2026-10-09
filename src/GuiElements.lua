@@ -261,7 +261,7 @@ function M.roll( parent )
   player_name:SetPoint( "CENTER", frame, "CENTER", 0, 0 )
   frame.player_name = player_name
 
-  local roll_type_container = M.create_text_in_container( "Button", frame, 37, "LEFT" )
+  local roll_type_container = M.create_text_in_container( "Button", frame, 40, "LEFT" )
   roll_type_container:SetPoint( "RIGHT", 0, 0 )
   frame.roll_type = roll_type_container.inner
 
