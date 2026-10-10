@@ -107,8 +107,9 @@ local function encode_string( val )
 end
 
 local function encode_number( val )
-  -- Check for NaN, -inf and inf
-  if val ~= val or val <= -math.huge or val >= math.huge then
+  -- Check for NaN, -inf and inf (1/0 in Lua 5.0)
+  local inf = (math and math.huge) or (1/0)
+  if val ~= val or val <= -inf or val >= inf then
     error( "unexpected number value '" .. tostring( val ) .. "'" )
   end
   return string.format( "%.14g", val )

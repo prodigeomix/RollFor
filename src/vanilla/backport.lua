@@ -16,6 +16,8 @@ string.match = function( str, pattern )
   return r1, r2, r3, r4, r5, r6, r7, r8, r9
 end
 
+if not math.huge then math.huge = 1/0 end
+
 LOOT_SLOT_NONE = 0
 LOOT_SLOT_ITEM = 1
 LOOT_SLOT_MONEY = 2
