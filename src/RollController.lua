@@ -860,6 +860,7 @@ function M.new(
   local function on_roll( player_name, player_class, roll_type, roll, plus_ones )
     M.debug.add( string.format( "on_roll( %s, %s, %s, %s )", player_name, player_class, roll_type, roll ) )
     local roll_tracker = get_roll_tracker( currently_displayed_item and currently_displayed_item.id )
+    local roller = m.find( player_name, softres.get_all_rollers(), "name")
     roll_tracker.add( player_name, player_class, roller and roller.role, roll_type, roll, plus_ones )
 
     local data, current_iteration = roll_tracker.get()
