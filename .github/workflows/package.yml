@@ -1,0 +1,37 @@
+name: Package Addon
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: RollFor
+
+      - name: Create Release Zip
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          rm -rf RollFor/.git RollFor/.github RollFor/tools RollFor/test RollFor/__pycache__
+          rm -f RollFor/*.py RollFor/*.sh RollFor/.gitignore RollFor/.editorconfig RollFor/.luarc.json RollFor/.gitattributes
+          rm -f RollFor/HANDOFF.md RollFor/AGENTS.md
+          zip -r "RollFor-${TAG_NAME}.zip" RollFor
+          zip -r RollFor.zip RollFor
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            RollFor-*.zip
+            RollFor.zip
+          generate_release_notes: true
