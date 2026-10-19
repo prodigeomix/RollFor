@@ -1,0 +1,624 @@
+{
+  "metadata": {
+    "id": "3T9RB7",
+    "instance": 94,
+    "instances": [
+      "Blackwing Lair"
+    ],
+    "origin": "raidres"
+  },
+  "softreserves": [
+    {
+      "name": "Gankhorde",
+      "role": "RogueDaggers",
+      "items": [
+        {
+          "id": 19406,
+          "quality": 4,
+          "sr_plus": 70
+        },
+        {
+          "id": 19346,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Criishacea",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 19334,
+          "quality": 4,
+          "sr_plus": 60
+        },
+        {
+          "id": 19373,
+          "quality": 4,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Blackfang",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 19361,
+          "quality": 4,
+          "sr_plus": 40
+        },
+        {
+          "id": 16936,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Pysanka",
+      "role": "PaladinProtection",
+      "items": [
+        {
+          "id": 16951,
+          "quality": 4,
+          "sr_plus": 20
+        },
+        {
+          "id": 33081,
+          "quality": 4,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Jastra",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 33076,
+          "quality": 4,
+          "sr_plus": 50
+        },
+        {
+          "id": 33075,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Albedo",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 19406,
+          "quality": 4
+        },
+        {
+          "id": 36551,
+          "quality": 4,
+          "sr_plus": 50
+        }
+      ]
+    },
+    {
+      "name": "Cameltotems",
+      "role": "ShamanRestoration",
+      "items": [
+        {
+          "id": 19430,
+          "quality": 4,
+          "sr_plus": 40
+        },
+        {
+          "id": 19395,
+          "quality": 4,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Nutteria",
+      "role": "RogueDaggers",
+      "items": [
+        {
+          "id": 19406,
+          "quality": 4,
+          "sr_plus": 70
+        },
+        {
+          "id": 16905,
+          "quality": 4,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Aiushtha",
+      "role": "HunterMarksmanship",
+      "items": [
+        {
+          "id": 16942,
+          "quality": 4,
+          "sr_plus": 70
+        },
+        {
+          "id": 16937,
+          "quality": 4,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Dilitiria",
+      "role": "RogueDaggers",
+      "items": [
+        {
+          "id": 16905,
+          "quality": 4,
+          "sr_plus": 40
+        },
+        {
+          "id": 16905,
+          "quality": 4,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Gredash",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 16937,
+          "quality": 4,
+          "sr_plus": 50
+        },
+        {
+          "id": 16936,
+          "quality": 4,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Banthracis",
+      "role": "PaladinHoly",
+      "items": [
+        {
+          "id": 16958,
+          "quality": 4
+        },
+        {
+          "id": 16951,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Strykerr",
+      "role": "HunterSurvival",
+      "items": [
+        {
+          "id": 19002,
+          "quality": 4
+        },
+        {
+          "id": 19364,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Akaphd",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 19363,
+          "quality": 4,
+          "sr_plus": 30
+        },
+        {
+          "id": 16961,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Bubblebaby",
+      "role": "PaladinHoly",
+      "items": [
+        {
+          "id": 19395,
+          "quality": 4,
+          "sr_plus": 70
+        },
+        {
+          "id": 19348,
+          "quality": 4,
+          "sr_plus": 70
+        }
+      ]
+    },
+    {
+      "name": "Bonn",
+      "role": "PriestShadow",
+      "items": [
+        {
+          "id": 19379,
+          "quality": 4,
+          "sr_plus": 60
+        },
+        {
+          "id": 19360,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Axtrox",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 19402,
+          "quality": 4,
+          "sr_plus": 20
+        },
+        {
+          "id": 19387,
+          "quality": 4,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Holysting",
+      "role": "PriestDiscipline",
+      "items": [
+        {
+          "id": 19379,
+          "quality": 4,
+          "sr_plus": 70
+        },
+        {
+          "id": 16920,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Meanvile",
+      "role": "WarlockAffliction",
+      "items": [
+        {
+          "id": 19403,
+          "quality": 4,
+          "sr_plus": 70
+        },
+        {
+          "id": 19379,
+          "quality": 4,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Nilune",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 19356,
+          "quality": 4
+        },
+        {
+          "id": 19379,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Reactive",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 16917,
+          "quality": 4,
+          "sr_plus": 10
+        },
+        {
+          "id": 16913,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Thazdingo",
+      "role": "ShamanElemental",
+      "items": [
+        {
+          "id": 16949,
+          "quality": 4,
+          "sr_plus": 60
+        },
+        {
+          "id": 19347,
+          "quality": 4,
+          "sr_plus": 70
+        }
+      ]
+    },
+    {
+      "name": "Zipz",
+      "role": "DruidRestoration",
+      "items": [
+        {
+          "id": 19395,
+          "quality": 4,
+          "sr_plus": 60
+        },
+        {
+          "id": 19382,
+          "quality": 4,
+          "sr_plus": 60
+        }
+      ]
+    },
+    {
+      "name": "Azelia",
+      "role": "PaladinHoly",
+      "items": [
+        {
+          "id": 19385,
+          "quality": 4,
+          "sr_plus": 60
+        },
+        {
+          "id": 19395,
+          "quality": 4,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Juice",
+      "role": "ShamanEnhancement",
+      "items": [
+        {
+          "id": 16945,
+          "quality": 4,
+          "sr_plus": 50
+        },
+        {
+          "id": 16949,
+          "quality": 4,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Akachi",
+      "role": "WarlockAffliction",
+      "items": [
+        {
+          "id": 16932,
+          "quality": 4
+        },
+        {
+          "id": 16931,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Remorph",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 16935,
+          "quality": 4
+        },
+        {
+          "id": 16940,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Delich",
+      "role": "DruidBear",
+      "items": [
+        {
+          "id": 19357,
+          "quality": 4
+        },
+        {
+          "id": 19405,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Prixi",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16923,
+          "quality": 4
+        },
+        {
+          "id": 19375,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Shendralee",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16923,
+          "quality": 4,
+          "sr_plus": 20
+        },
+        {
+          "id": 16920,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Fallout",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 19361,
+          "quality": 4,
+          "sr_plus": 50
+        },
+        {
+          "id": 19361,
+          "quality": 4,
+          "sr_plus": 50
+        }
+      ]
+    },
+    {
+      "name": "Bik",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 16959,
+          "quality": 4
+        },
+        {
+          "id": 16965,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Allinone",
+      "role": "PaladinProtection",
+      "items": [
+        {
+          "id": 19360,
+          "quality": 4
+        },
+        {
+          "id": 33086,
+          "quality": 4,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Fnask",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 19334,
+          "quality": 4,
+          "sr_plus": 70
+        },
+        {
+          "id": 19387,
+          "quality": 4,
+          "sr_plus": 30
+        }
+      ]
+    },
+    {
+      "name": "Boing",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 19432,
+          "quality": 4
+        },
+        {
+          "id": 19406,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Coldsoup",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 33081,
+          "quality": 4,
+          "sr_plus": 70
+        },
+        {
+          "id": 19347,
+          "quality": 4,
+          "sr_plus": 70
+        }
+      ]
+    },
+    {
+      "name": "Deimoo",
+      "role": "DruidBear",
+      "items": [
+        {
+          "id": 16903,
+          "quality": 4,
+          "sr_plus": 10
+        },
+        {
+          "id": 19432,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Bluefelon",
+      "role": "ShamanEnhancement",
+      "items": [
+        {
+          "id": 16943,
+          "quality": 4
+        },
+        {
+          "id": 16945,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Ushtik",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 16942,
+          "quality": 4
+        },
+        {
+          "id": 19361,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Kasia",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16923,
+          "quality": 4
+        },
+        {
+          "id": 16920,
+          "quality": 4
+        }
+      ]
+    }
+  ],
+  "hardreserves": []
+}

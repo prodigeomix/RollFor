@@ -1,0 +1,250 @@
+{
+  "metadata": {
+    "id": "GU87B3",
+    "instance": 97,
+    "instances": [
+      "Onyxia's Lair"
+    ],
+    "origin": "raidres"
+  },
+  "softreserves": [
+    {
+      "name": "Pysanka",
+      "role": "PaladinProtection",
+      "items": [
+        {
+          "id": 18813,
+          "quality": 4,
+          "sr_plus": 70
+        }
+      ]
+    },
+    {
+      "name": "Joblesspally",
+      "role": "PaladinRetribution",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Axtrox",
+      "role": "WarriorProtection",
+      "items": [
+        {
+          "id": 33153,
+          "quality": 4,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Kasia",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16921,
+          "quality": 4,
+          "sr_plus": 50
+        }
+      ]
+    },
+    {
+      "name": "Herbs",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16921,
+          "quality": 4,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Blackfang",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3,
+          "sr_plus": 40
+        }
+      ]
+    },
+    {
+      "name": "Nilune",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 16914,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Janetta",
+      "role": "DruidRestoration",
+      "items": [
+        {
+          "id": 18423,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Prixi",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16921,
+          "quality": 4,
+          "sr_plus": 60
+        }
+      ]
+    },
+    {
+      "name": "Jinpally",
+      "role": "PaladinHoly",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "name": "Broman",
+      "role": "WarriorProtection",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Toste",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16921,
+          "quality": 4,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Ahjinn",
+      "role": "WarlockAffliction",
+      "items": [
+        {
+          "id": 17075,
+          "quality": 4,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Heallios",
+      "role": "PriestShadow",
+      "items": [
+        {
+          "id": 16921,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Akiruy",
+      "role": "WarlockDemonology",
+      "items": [
+        {
+          "id": 17078,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Bik",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 30017,
+          "quality": 4,
+          "sr_plus": 30
+        }
+      ]
+    },
+    {
+      "name": "Carbon",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 30017,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Remorph",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 33150,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Reactive",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 30017,
+          "quality": 4,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Dogling",
+      "role": "ShamanRestoration",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3,
+          "sr_plus": 10
+        }
+      ]
+    },
+    {
+      "name": "Galahadt",
+      "role": "PaladinRetribution",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3,
+          "sr_plus": 20
+        }
+      ]
+    },
+    {
+      "name": "Turtlerecall",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 33156,
+          "quality": 4,
+          "sr_plus": 30
+        }
+      ]
+    }
+  ],
+  "hardreserves": []
+}

@@ -459,13 +459,17 @@ function M.colorize_item_by_quality( item_name, quality )
 end
 
 function M.colorize_player_by_class( name, class )
-  if not class then return name end
-  local color = M.api.RAID_CLASS_COLORS[ string.upper( class ) ].colorStr
+  if not name then return "" end
+  if not class or type( class ) ~= "string" then return name end
+  local upper_class = string.upper( class )
+  local class_entry = M.api.RAID_CLASS_COLORS and M.api.RAID_CLASS_COLORS[ upper_class ]
+  if not class_entry then return name end
+  local color = class_entry.colorStr
   if not color then
-    local c = M.api.RAID_CLASS_COLORS[ string.upper( class ) ]
-    color = string.format( "ff%02x%02x%02x", c.r * 255, c.g * 255, c.b * 255 )
+    color = string.format( "ff%02x%02x%02x", class_entry.r * 255, class_entry.g * 255, class_entry.b * 255 )
   end
-  return "|c" .. color .. name .. M.api.FONT_COLOR_CODE_CLOSE
+  local close_code = M.api.FONT_COLOR_CODE_CLOSE or "|r"
+  return "|c" .. color .. name .. close_code
 end
 
 local base64_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/' -- You will need this for encoding/decoding

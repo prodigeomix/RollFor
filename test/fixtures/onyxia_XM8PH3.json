@@ -1,0 +1,245 @@
+{
+  "metadata": {
+    "id": "XM8PH3",
+    "instance": 97,
+    "instances": [
+      "Onyxia's Lair"
+    ],
+    "origin": "raidres"
+  },
+  "softreserves": [
+    {
+      "name": "Pysanka",
+      "role": "PaladinProtection",
+      "items": [
+        {
+          "id": 17078,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Blackfang",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "name": "Bik",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 30017,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Axtrox",
+      "role": "WarriorProtection",
+      "items": [
+        {
+          "id": 33153,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Nilune",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "name": "Akiruy",
+      "role": "WarlockDemonology",
+      "items": [
+        {
+          "id": 16929,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Broman",
+      "role": "WarriorProtection",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3,
+          "sr_plus": 30
+        }
+      ]
+    },
+    {
+      "name": "Herbs",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16921,
+          "quality": 4,
+          "sr_plus": 30
+        }
+      ]
+    },
+    {
+      "name": "Heallios",
+      "role": "PriestShadow",
+      "items": [
+        {
+          "id": 16921,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Mayble",
+      "role": "WarriorProtection",
+      "items": [
+        {
+          "id": 16963,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Ahjinn",
+      "role": "WarlockAffliction",
+      "items": [
+        {
+          "id": 17075,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Dogling",
+      "role": "ShamanRestoration",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "name": "Toste",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 16921,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Jinpally",
+      "role": "PaladinHoly",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "name": "Bluefelon",
+      "role": "ShamanEnhancement",
+      "items": [
+        {
+          "id": 16947,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Carbon",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 30017,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Reactive",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 30017,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Prixi",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "name": "Shadowspank",
+      "role": "WarlockAffliction",
+      "items": [
+        {
+          "id": 16929,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Silverfang",
+      "role": "RogueDaggers",
+      "items": [
+        {
+          "id": 33157,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Galahadt",
+      "role": "PaladinRetribution",
+      "items": [
+        {
+          "id": 17966,
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "name": "Turtlerecall",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 33156,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Greenfelon",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 18205,
+          "quality": 4
+        }
+      ]
+    }
+  ],
+  "hardreserves": []
+}

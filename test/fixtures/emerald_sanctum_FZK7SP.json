@@ -1,0 +1,274 @@
+{
+  "metadata": {
+    "id": "FZK7SP",
+    "instance": 102,
+    "instances": [
+      "Emerald Sanctum"
+    ],
+    "origin": "raidres"
+  },
+  "softreserves": [
+    {
+      "name": "Pysanka",
+      "role": "PaladinProtection",
+      "items": [
+        {
+          "id": 61522,
+          "quality": 4,
+          "sr_plus": 50
+        }
+      ]
+    },
+    {
+      "name": "Joblesspally",
+      "role": "PaladinRetribution",
+      "items": [
+        {
+          "id": 61215,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Mayble",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 61215,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Prixi",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 61527,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Blackfang",
+      "role": "HunterBeastMastery",
+      "items": [
+        {
+          "id": 61213,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Bik",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 61215,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Axtrox",
+      "role": "WarriorProtection",
+      "items": [
+        {
+          "id": 61215,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Nilune",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 61209,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Akiruy",
+      "role": "WarlockDemonology",
+      "items": [
+        {
+          "id": 61209,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Broman",
+      "role": "WarriorProtection",
+      "items": [
+        {
+          "id": 61238,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Turtlerecall",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 61215,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Herbs",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 84501,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Kasia",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 61208,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Nutteria",
+      "role": "RogueDaggers",
+      "items": [
+        {
+          "id": 61523,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Heallios",
+      "role": "PriestShadow",
+      "items": [
+        {
+          "id": 61209,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Apatrid",
+      "role": "PriestShadow",
+      "items": [
+        {
+          "id": 61206,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Ahjinn",
+      "role": "WarlockAffliction",
+      "items": [
+        {
+          "id": 61209,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Dogling",
+      "role": "ShamanRestoration",
+      "items": [
+        {
+          "id": 61527,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Toste",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 61208,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Jinpally",
+      "role": "PaladinHoly",
+      "items": [
+        {
+          "id": 61527,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Carbon",
+      "role": "PriestHoly",
+      "items": [
+        {
+          "id": 61208,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Reactive",
+      "role": "MageArcane",
+      "items": [
+        {
+          "id": 61209,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Silverfang",
+      "role": "RogueDaggers",
+      "items": [
+        {
+          "id": 30018,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Bluefelon",
+      "role": "ShamanEnhancement",
+      "items": [
+        {
+          "id": 61215,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Greenfelon",
+      "role": "WarriorFury",
+      "items": [
+        {
+          "id": 61215,
+          "quality": 4
+        }
+      ]
+    },
+    {
+      "name": "Galahadt",
+      "role": "PaladinRetribution",
+      "items": [
+        {
+          "id": 61522,
+          "quality": 4
+        }
+      ]
+    }
+  ],
+  "hardreserves": []
+}
