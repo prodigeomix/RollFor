@@ -14,7 +14,7 @@ local M = {}
 ---@param player_info PlayerInfo
 function M.new( config, boss_list, player_info )
   local function check_and_set_master_loot( arg1 )
-    if not config.auto_master_loot() then return end
+    if not config.auto_master_loot or not config.auto_master_loot() then return end
 
     local target_name = m.target_name()
     if not target_name or m.target_dead() then return end

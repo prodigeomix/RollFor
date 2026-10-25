@@ -346,6 +346,7 @@ local function create_components()
   -- TODO: Add type.
   M.new_group_event = m.NewGroupEvent.new( M.group_roster )
 
+
   -- TODO: Add type.
   M.auto_master_loot = m.AutoMasterLoot.new( M.config, m.BossList.zones, M.player_info )
 
@@ -394,7 +395,8 @@ local function create_components()
     M.player_info,
     M.roll_controller,
     M.rolling_logic,
-    M.chat
+    M.chat,
+    M.softres
   )
 
   M.loot_controller = m.LootController.new(
@@ -875,12 +877,12 @@ function M.on_player_login()
   end
 
   ---@diagnostic disable-next-line: undefined-global
-  if LootFrame then
+  if LootFrame and LootFrame.SetScript then
     LootFrame:UnregisterAllEvents()
     LootFrame:SetScript( "OnHide", nil )
   end
   ---@diagnostic disable-next-line: undefined-global
-  if pfLootFrame then
+  if pfLootFrame and pfLootFrame.SetScript then
     pfLootFrame:UnregisterAllEvents()
     pfLootFrame:SetScript( "OnHide", nil )
   end
