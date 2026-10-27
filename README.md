@@ -2,7 +2,26 @@
 A World of Warcraft (1.12.1 and 2.5.2) addon that manages rolling for items.  
 
 ## New in this fork
-This version includes the following new features:
+### Latest (v4.8.2) Improvements & Bugfixes
+* **Raidres SR+ Standard (v3.2) Full Support**:
+  * Added full compatibility with the Raidres SR+ v3.2 specification.
+  * Properly parses duplicate reservations for the same item by retaining the highest points (`math.max`), preventing point overwrites and desynchronization.
+* **Auto Master Loot & Auto Group Loot Stability**:
+  * **Fixed Loot Window Autoclose**: In Vanilla 1.12.1, calling `SetLootMethod("group")` while the corpse loot window was open caused the server to forcefully abort active looting sessions. Switching to group loot is now safely deferred until all active looting and rolling sessions conclude.
+  * **Removed Combat Tracker Desyncs**: Stripped unstable combat-drop listeners that caused erratic loot mode flips during raid wipes, Feign Death, or Vanish.
+* **Auto-Loot Protection for Soft-Reserved Items**:
+  * When Auto-Looting below Epic threshold is active, soft-reserved Rare (Blue) BoE/BoP items are strictly protected and will never be automatically scooped into the Master Looter's personal bags.
+* **Boss Catalog & Orthography Updates**:
+  * Fixed typo for `"Bloodlord Mandokir"` in Zul'Gurub.
+  * Added alias for `"Brood Commander Axelus"` in Ruins of Ahn'Qiraj (AQ20).
+  * Added missing `"Temple of Ahn'Qiraj"` (AQ40) zone table.
+  * Pruned non-boss trash mobs (*Witherbark Speaker*, *Vilebranch Speaker*) from the boss database.
+* **Vanilla 1.12.1 Engine Resilience**:
+  * Defensively guarded post-1.12 FrameXML C-APIs (`SetJustifyV`, `SetAutoFocus`, `SetMultiLine`, `HookScript`) to guarantee 100% crash immunity on pure 1.12.1 and Turtle WoW clients.
+  * Eliminated invisible mousetrap frame click-interceptions during UI fade-in.
+
+### Earlier Fork Features
+This version also includes the following features:
 * New option `/rf config auto-class-announce` Toggle replace normal roll message with classes for items that has class restrictions.
 * New option `/rf config auto-tmog` Toggle automatically disable tmog roll option on trash loot.
 * New option `/rf config loot-frame-cursor` Toggle loot frame being positioned at cursor location.

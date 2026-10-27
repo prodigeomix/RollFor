@@ -145,6 +145,11 @@ function M.new( popup_builder, awarded_loot, version_broadcast, event_bus, confi
       this.changelog.content.parent = this.changelog
 
       local changelog = {
+        { ver = "4.8.2", text = "Support Raidres SR+ v3.2 duplicate reservations with max points." },
+        { ver = "4.8.2", text = "Fix Vanilla 1.12 loot window closure bug; defer group loot while looting/rolling." },
+        { ver = "4.8.2", text = "Protect reserved Rare/Blue BoE items from Master Looter auto-looting." },
+        { ver = "4.8.2", text = "Fix boss names (Mandokir, Axelus), add Temple of Ahn'Qiraj, prune trash." },
+        { ver = "4.8.2", text = "Guard post-1.12 FrameXML C-APIs for 100% pure 1.12 client stability." },
         { ver = "4.8.1", text = "Add new MC bosses to boss list. Refactor keybindings" },
         { ver = "4.8.0", text = "Added +1 handling" },
         { ver = "4.7.13", text = "Add option to show player roles in rolling popup." },
