@@ -393,10 +393,7 @@ local function create_components()
     M.config,
     m.BossList.zones,
     M.player_info,
-    M.roll_controller,
-    M.rolling_logic,
-    M.chat,
-    M.softres
+    M.rolling_logic
   )
 
   M.loot_controller = m.LootController.new(
@@ -877,15 +874,9 @@ function M.on_player_login()
   end
 
   ---@diagnostic disable-next-line: undefined-global
-  if LootFrame and LootFrame.SetScript then
-    LootFrame:UnregisterAllEvents()
-    LootFrame:SetScript( "OnHide", nil )
-  end
+  LootFrame:UnregisterAllEvents()
   ---@diagnostic disable-next-line: undefined-global
-  if pfLootFrame and pfLootFrame.SetScript then
-    pfLootFrame:UnregisterAllEvents()
-    pfLootFrame:SetScript( "OnHide", nil )
-  end
+  if pfLootFrame then pfLootFrame:UnregisterAllEvents() end
 end
 
 ---@diagnostic disable-next-line: unused-local, unused-function

@@ -7,13 +7,12 @@ local M = {}
 
 ---@class AutoMasterLoot
 ---@field on_player_target_changed fun( arg1: any? )
----@field on_combat_start fun()
 
 ---@param config Config
 ---@param boss_list BossList
 ---@param player_info PlayerInfo
 function M.new( config, boss_list, player_info )
-  local function check_and_set_master_loot( arg1 )
+  local function on_player_target_changed( arg1 )
     if not config.auto_master_loot or not config.auto_master_loot() then return end
 
     local target_name = m.target_name()
@@ -33,17 +32,8 @@ function M.new( config, boss_list, player_info )
     end
   end
 
-  local function on_player_target_changed( arg1 )
-    check_and_set_master_loot( arg1 )
-  end
-
-  local function on_combat_start()
-    check_and_set_master_loot( nil )
-  end
-
   return {
-    on_player_target_changed = on_player_target_changed,
-    on_combat_start = on_combat_start
+    on_player_target_changed = on_player_target_changed
   }
 end
 
