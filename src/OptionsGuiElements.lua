@@ -329,7 +329,7 @@ function M.create_config( caption, setting, widget, tooltip, ufunc, options )
       this.object_count = this.object_count + 1
     end
     frame.caption:SetJustifyH( "LEFT" )
-    frame.caption:SetJustifyV( "BOTTOM" )
+    if frame.caption.SetJustifyV then frame.caption:SetJustifyV( "BOTTOM" ) end
     frame.caption:SetTextColor( 0.1254, 0.6235, 0.9764, 1 )
     frame.caption:SetAllPoints( frame )
   end
@@ -345,7 +345,7 @@ function M.create_config( caption, setting, widget, tooltip, ufunc, options )
       frame.input:SetHeight( 18 )
       frame.input:SetPoint( "RIGHT", -3, 0 )
       frame.input:SetFontObject( "GameFontNormal" )
-      frame.input:SetAutoFocus( false )
+      if frame.input.SetAutoFocus then frame.input:SetAutoFocus( false ) end
       frame.input:SetText( config_db[ setting ] )
       frame.input:SetScript( "OnEscapePressed", function()
         this:ClearFocus()

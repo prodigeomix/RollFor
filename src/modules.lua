@@ -434,23 +434,21 @@ function M.find( value, t, extract_field )
 end
 
 function M.idempotent_hookscript( frame, event, callback )
-  if not frame.RollForHookScript then
-    frame.RollForHookScript = frame.HookScript
+  if not frame then return end
 
-    frame.HookScript = function( self, _event, f )
-      if string.find( _event, "RollForIdempotent", 1, true ) == 1 then
-        if not frame[ _event ] then
-          local real_event = string.gsub( _event, "RollForIdempotent", "" )
-          frame.RollForHookScript( self, real_event, f )
-          frame[ _event ] = true
-        end
-      else
-        frame.RollForHookScript( self, _event, f )
-      end
+  if frame.HookScript then
+    pcall( frame.HookScript, frame, event, callback )
+  elseif frame.SetScript and frame.GetScript then
+    local orig = frame:GetScript( event )
+    if orig then
+      frame:SetScript( event, function( a1, a2, a3, a4, a5, a6, a7, a8, a9 )
+        orig( a1, a2, a3, a4, a5, a6, a7, a8, a9 )
+        callback( a1, a2, a3, a4, a5, a6, a7, a8, a9 )
+      end )
+    else
+      frame:SetScript( event, callback )
     end
   end
-
-  frame:HookScript( "RollForIdempotent" .. event, callback )
 end
 
 function M.colorize_item_by_quality( item_name, quality )

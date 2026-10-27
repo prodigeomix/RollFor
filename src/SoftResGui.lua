@@ -70,10 +70,10 @@ local function create_frame( api, on_import, on_clear, on_cancel, on_dirty )
   editbox:SetPoint( "TOPLEFT", 0, 0 )
   editbox:SetHeight( 50 )
   editbox:SetWidth( 50 )
-  editbox:SetMultiLine( true )
+  if editbox.SetMultiLine then editbox:SetMultiLine( true ) end
   editbox:SetTextInsets( 5, 5, 3, 3 )
   editbox:EnableMouse( true )
-  editbox:SetAutoFocus( false )
+  if editbox.SetAutoFocus then editbox:SetAutoFocus( false ) end
   editbox:SetFontObject( ChatFontNormal )
   frame.editbox = editbox
 

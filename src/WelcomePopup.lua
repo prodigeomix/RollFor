@@ -37,8 +37,13 @@ function M.new( frame_builder, ace_timer, db )
     if mode == "IN" then
       fade_info.startAlpha = 0
       fade_info.endAlpha = 1
+      frame:EnableMouse( false )
       frame:SetAlpha( 0 )
       frame:Show()
+      fade_info.finishedFunc = function()
+        frame:EnableMouse( true )
+        if on_finish then on_finish() end
+      end
     elseif mode == "OUT" then
       fade_info.startAlpha = 1
       fade_info.endAlpha = 0
