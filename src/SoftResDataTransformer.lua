@@ -84,6 +84,10 @@ function M.transform( data )
           table.insert( sr_result[ item_id ].rollers, roller )
         else
           roller.rolls = roller.rolls + 1
+          local new_sr_plus = tonumber( item.sr_plus )
+          if new_sr_plus then
+            roller.sr_plus = math.max( roller.sr_plus or 0, new_sr_plus )
+          end
         end
       end
     end

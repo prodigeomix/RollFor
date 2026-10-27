@@ -27,9 +27,8 @@ M.zones    = {
   [ "Zul'Gurub" ] = {
     "High Priestess Jeklik",
     "High Priest Venoxis",
-    "Witherbark Speaker",
     "High Priestess Mar'li",
-    "Vilebranch Speaker",
+    "Bloodlord Mandokir",
     "Broodlord Mandokir",
     "Ohgan",
     "Gri'lek",
@@ -80,7 +79,22 @@ M.zones    = {
   },
   [ "Onyxia's Lair" ] = {
     "Onyxia",
-    "Broodcommander Axelus"
+    "Broodcommander Axelus",
+    "Brood Commander Axelus"
+  },
+  [ "Temple of Ahn'Qiraj" ] = {
+    "The Prophet Skeram",
+    "Vem",
+    "Lord Kri",
+    "Princess Yauj",
+    "Battleguard Sartura",
+    "Fankriss the Unyielding",
+    "Viscidus",
+    "Princess Huhuran",
+    "Emperor Vek'lor",
+    "Emperor Vek'nilash",
+    "Ouro",
+    "C'Thun"
   },
   [ "Ahn'Qiraj" ] = {
     "The Prophet Skeram",

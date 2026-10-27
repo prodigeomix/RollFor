@@ -136,10 +136,11 @@ function M.new( loot_list, config, boss_list, player_info, roll_controller, roll
     local target_name = m.target_name()
     local corpse_is_boss = (target_name and is_a_boss( target_name )) or m_boss_killed
 
-    -- Also check if items on the corpse are marked as boss loot or epic in raid, or reserved
+    -- Also check if items on the corpse are marked as boss loot or quality >= Rare (3) or threshold, or reserved
     if not corpse_is_boss then
+      local threshold = m.api.GetLootThreshold() or 2
       for _, item in ipairs( loot_list.get_items() ) do
-        if item.is_boss_loot or (item.quality and item.quality >= 4) or is_reserved( item.id ) then
+        if item.is_boss_loot or (item.quality and (item.quality >= 3 or item.quality >= threshold)) or is_reserved( item.id ) then
           corpse_is_boss = true
           break
         end
@@ -190,12 +191,38 @@ function M.new( loot_list, config, boss_list, player_info, roll_controller, roll
   local function on_loot_slot_cleared( slot )
     if not m_looting_boss then return end
 
-    -- Check if all items are gone from corpse
     local remaining_items = loot_list.get_items()
     if getn( remaining_items ) == 0 then
+      m_boss_items = {}
       m_pending_group_loot = true
       if not loot_list.is_looting() and not (rolling_logic and rolling_logic.is_rolling()) then
         safe_set_group_loot( "All boss items looted." )
+      end
+      return
+    end
+
+    -- Reconcile tracked boss items with what remains on the corpse
+    -- (handles items awarded via native Blizzard UI or looted directly)
+    local remaining_ids = {}
+    for _, item in ipairs( remaining_items ) do
+      if item.id then
+        remaining_ids[ item.id ] = (remaining_ids[ item.id ] or 0) + 1
+      end
+    end
+
+    for item_id, _ in pairs( m_boss_items ) do
+      local remaining_count = remaining_ids[ item_id ] or 0
+      if remaining_count <= 0 then
+        m_boss_items[ item_id ] = nil
+      elseif m_boss_items[ item_id ] > remaining_count then
+        m_boss_items[ item_id ] = remaining_count
+      end
+    end
+
+    if count_pending_items() == 0 then
+      m_pending_group_loot = true
+      if not loot_list.is_looting() and not (rolling_logic and rolling_logic.is_rolling()) then
+        safe_set_group_loot( "All boss items assigned." )
       end
     end
   end

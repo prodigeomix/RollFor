@@ -31,11 +31,23 @@ local _G = getfenv( 0 )
 ---@param api function
 ---@param db table
 ---@param config Config
-function M.new( loot_list, api, db, config, player_info )
+---@param player_info PlayerInfo
+---@param softres SoftRes?
+function M.new( loot_list, api, db, config, player_info, softres )
   db.items = db.items or {}
 
   local frame
   local items = db.items
+
+  local function is_reserved( item_id )
+    if not softres or not item_id then return false end
+    if softres.is_item_hardressed and softres.is_item_hardressed( item_id ) then return true end
+    if softres.get then
+      local rollers = softres.get( item_id )
+      if rollers and getn( rollers ) > 0 then return true end
+    end
+    return false
+  end
 
   local function find_my_candidate_index( slot )
     for i = 1, 40 do
@@ -57,6 +69,10 @@ function M.new( loot_list, api, db, config, player_info )
 
   local function is_auto_looted( item )
     if not config.auto_loot() then
+      return false
+    end
+
+    if is_reserved( item.id ) then
       return false
     end
 
